@@ -77,7 +77,7 @@ Anything written in _italic font_ is optional/extra material.
     - `geom_boxplot()`, `geom_density()`
     - _themes (`ggthemes`?)_
 - ### __Pass / Fail assignment__
-_Find a dataset (online, from an R package, or self-created) and create an Exploratory Data Analysis_
+  - _Find a dataset (online, from an R package, or self-created) and create an Exploratory Data Analysis_
   - Tip: The new [Google dataset search](https://toolbox.google.com/datasetsearch).
   - Format: stand-alone `RStudio` project folder with:
     - the dataset (`csv`, `xlsx`, `sav`, `dat`, `json`, or any other common format)
