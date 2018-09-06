@@ -172,3 +172,4 @@ Anything written in _italic font_ is optional/extra material.
     - K-means clustering with `kmeans()`
     - Hierarchical clustering with `hclust()`
     - Visualising clusters in `ggplot`
+    - [Modularity clustering](https://arxiv.org/pdf/physics/0602124.pdf) with [igraph](http://igraph.org/r/doc/cluster_leading_eigen.html)
