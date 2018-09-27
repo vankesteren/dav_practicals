@@ -27,6 +27,7 @@ and follow the guide to run the `R Programming: The basics of programming in R` 
 
 __The following is the minimum of what you should know about `R` before starting with the first practical__
 - What is `R` (a fancy calculator) and what is an `.R` file (a recipe for calculations)
+- What is an `R` package (a set of functions you can download to use in your own code)
 - How to run `R` code in `RStudio`
 - What is a variable `x <- 10`
 - What is a function `y <- fun(x = 10)`
@@ -52,7 +53,7 @@ Anything written in _italic font_ is optional/extra material.
 
 ### Week 1
 
-  - __R basics for DAV__
+  - [__R basics for DAV__](https://vankesteren.github.io/dav_practicals/01%20-%20R%20basics%20for%20DAV/r_basics.html)
     - `R` and `RStudio`
     - Project organisation
     - Help files using `?`, CRAN, and internet search

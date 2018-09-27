@@ -150,9 +150,10 @@ The second book we are using in this course is [Hadley Wickham's R for Data Scie
 ```{r install_tidy, eval = FALSE}
 install.packages("tidyverse")
 library(tidyverse)
+tidyverse_packages()
 ```
 
-You can see that tidyverse contains no less than 8 packages. We are mostly going to use `ggplot2` and `dplyr`. In the next practical, we are going to learn about how to use `dplyr` for data manipulation.
+You can see that tidyverse contains many packages, some of which are loaded by default when tidyverse is loaded. We are mostly going to use `ggplot2` and `dplyr`. In the next practical, we are going to learn about how to use `dplyr` for data manipulation.
 
 # Code style
 

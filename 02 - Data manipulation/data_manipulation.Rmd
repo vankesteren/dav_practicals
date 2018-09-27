@@ -1,0 +1,44 @@
+---
+title: "R Basics for DAV"
+author: ""
+date: ""
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+  html_document:
+    toc: true
+    toc_depth: 1
+---
+
+```{r load_packages, include = FALSE}
+library(ISLR)
+library(tidyverse)
+library(haven)
+```
+
+# Loading data
+
+For this practical, we are going to use a dataset from Kaggle - the Google play store apps data by user lava18. We have downloaded it into the data folder already from https://www.kaggle.com/lava18/google-play-store-apps.
+
+Tidyverse contains many data loading functions in the packages `readr` (default file types) and `haven` (external file types such as from SPSS or Stata), each for their own file type. The most common file type is `csv`, which is what we use here.
+
+> Use the function `read_csv()` to import the file "data/googleplaystore.csv" and store it in a variable called `apps`.
+
+```{r readcsv}
+apps <- read_csv("data/googleplaystore.csv")
+```
+
+These import functions are fast and safe: they display informative errors if anything goes wrong. In this case, we can also see what variable type each column gets.
+
+> Use the function and `head()` to look at the first few rows of the `apps` dataset
+
+```{r head}
+head(apps)
+```
+
+
