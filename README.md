@@ -1,10 +1,21 @@
 # Data Analysis and Visualisation practicals
-This repository contains the prerequisite information and the files for the practicals of the elective master's course _Data Analysis and Visualisation_ at Utrecht University (course code `201600038` in Osiris).
+Here you can find all information and files for the practicals of the elective master's course _Data Analysis and Visualisation_ at Utrecht University (course code `201600038` in Osiris).
+
+You are going to be working inside the practicals folder. [Download the folder](https://github.com/vankesteren/dav_practicals/zipball/master) and unzip it to a smart location on your computer.
+
+The first practical is located in the folder `01 - R basics for DAV`.
 
 ## Prerequisites
-__Install `R` and RStudio Desktop (open source) by following the instructions [here](https://www.rstudio.com/products/rstudio/download/#download)__
+- __Install `R` and RStudio Desktop (open source) by following the instructions [here](https://www.rstudio.com/products/rstudio/download/#download)__
+- __If you don't yet have a TeX distribution, install one:__
+  - [MiKTeX on Windows](https://miktex.org/)
+  - [MacTeX on OS X](https://www.tug.org/mactex/)
+  - TeX Live or similar on Linux (you should be able to find one for your distro)
 
-If you have no experience with `R` or another programming language, you are going to need to catch up before starting the course. Some good sources are:
+
+If you have no experience with `R` or another programming language, you are going to need to catch up before starting the course and during the course. _This is not an introductory course on programming with R, but a course on data analysis and visualisation_.
+
+Some good sources are:
 - The first two chapters of [introduction to R on datacamp](https://www.datacamp.com/courses/free-introduction-to-r)
 - Install `R`, play around, and [read the workflow basics chapter in Hadley Wickham's R for Data Science](http://r4ds.had.co.nz/workflow-basics.html#workflow-basics)
 - Interactive R course: install `R` as in the previous point and in the console type the following lines one by one
@@ -45,7 +56,7 @@ Anything written in _italic font_ is optional/extra material.
     - `R` and `RStudio`
     - Project organisation
     - Help files using `?`, CRAN, and internet search
-    - `R` files, `notebooks`, and `R Markdown`
+    - `R Markdown`
     - The `ISLR` package (datasets from James ISLR)
     - The `tidyverse` as a dialect of the `R` language (Wickham R4DS)
     - The [google style guide](https://google.github.io/styleguide/Rguide.xml) (ISLR does not follow it)
