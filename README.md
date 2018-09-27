@@ -53,7 +53,7 @@ Anything written in _italic font_ is optional/extra material.
 
 ### Week 1
 
-  - [__R basics for DAV__](https://vankesteren.github.io/dav_practicals/01%20-%20R%20basics%20for%20DAV/r_basics.html)
+  - __R basics for DAV__ [`open pdf`](https://vankesteren.github.io/dav_practicals/01%20-%20R%20basics%20for%20DAV/r_basics.pdf)
     - `R` and `RStudio`
     - Project organisation
     - Help files using `?`, CRAN, and internet search
@@ -63,7 +63,7 @@ Anything written in _italic font_ is optional/extra material.
     - The [google style guide](https://google.github.io/styleguide/Rguide.xml) (ISLR does not follow it)
     - _R packages on GitHub_
 
-  - __Data manipulation & exploratory data analysis__
+  - __Data manipulation & exploratory data analysis__  [`open pdf`](https://vankesteren.github.io/dav_practicals/02%20-%20Data%20manipulation/data_manipulation.pdf)
     - Data types: `character`, `numeric`, `factor`
     - Lists
     - Loading datasets from `.csv` or `.xlsx` (or other formats with `haven`)
