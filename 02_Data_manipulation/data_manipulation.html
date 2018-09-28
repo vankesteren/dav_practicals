@@ -1704,10 +1704,45 @@ students</code></pre>
 <li>Reorder the rows (<code>arrange()</code>).</li>
 <li>Pick variables by their names (<code>select()</code>).</li>
 <li>Create new variables with functions of existing variables (<code>mutate()</code>).</li>
-<li>Collapse many values down to a single summary (<code>summarise()</code>).</li>
 </ul>
 <p>Cleaning data files and extracting the most useful information is essential to any downstream steps such as plotting or analysis. Make sure you know exactly which variable types are in your tibbles / data frames!</p>
 </div>
+</div>
+<div id="data-processing-pipelines" class="section level1">
+<h1>Data processing pipelines</h1>
+<p>A very useful feature in tidyverse is the pipe <code>%&gt;%</code>. The pipe inputs the result from the left-hand side as the first argument of the right-hand side function: <code>filter(students, grade &gt; 5.5)</code> becomes <code>students %&gt;% filter(grade &gt; 5.5)</code>. With the pipe, a set of processing steps becomes a neatly legible data processing pipeline!</p>
+<p>Different tasks we have performed on the students dataset can be done in one pipeline like so:</p>
+<pre class="r"><code>students_dataset &lt;-
+  read_xlsx(&quot;data/students.xlsx&quot;) %&gt;% 
+  mutate(prog = recode(programme, &quot;A&quot; = &quot;Science&quot;, &quot;B&quot; = &quot;Social Science&quot;)) %&gt;% 
+  filter(grade &gt; 5.5) %&gt;% 
+  arrange(programme, -grade) %&gt;% 
+  select(student_number, prog, grade)
+
+students_dataset</code></pre>
+<pre><code>## # A tibble: 34 x 3
+##    student_number prog    grade
+##             &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;
+##  1        4011659 Science  8.94
+##  2        4133949 Science  8.40
+##  3        6553913 Science  8.24
+##  4        6352581 Science  8.09
+##  5        6165611 Science  8.02
+##  6        6997130 Science  7.75
+##  7        4862862 Science  7.71
+##  8        6562582 Science  7.57
+##  9        4483974 Science  7.46
+## 10        5128923 Science  7.26
+## # ... with 24 more rows</code></pre>
+<p>In one statement, we have loaded the dataset from disk, recoded the programme variable, filtered only students that pass, reordered the rows and selected the relevant columns only. We did not need to save intermediate results or nest functions deeply.</p>
+<hr />
+<p><strong>Create a data processing pipeline that loads the apps dataset, parses the number of downloads using <code>mutate</code> and <code>parse_number()</code>, shows only apps with more than 500 000 000 downloads, orders them by rating (best on top), and shows only the relevant columns (you can choose which are relevant).</strong></p>
+<hr />
+<p>If you find duplicates, you may need to use <code>distinct(App, .keep_all = TRUE)</code> as the last step in your pipeline to remove duplicate app names.</p>
+</div>
+<div id="grouping-and-summarisation" class="section level1">
+<h1>Grouping and summarisation</h1>
+<p>We have now seen how we can transform and clean our datasets. The next step is to start exploring the dataset by computing relevant summary statistics, such as means, ranges, variances, differences, etc. We have already used the function <code>summary()</code> which comes with <code>R</code>, but <code>dplyr</code> has extra summary functionality in the form of the <code>summarise()</code> (or <code>summarize()</code>) verb.</p>
 </div>
 
 

@@ -229,7 +229,7 @@ The third verb is `select()`, which selects columns of interest.
 
 ```{r select, include = params$answers}
 select(students, student_number, programme)
-# or, equivalently: select(stud, -grade)
+# or, equivalently: select(students, -grade)
 ```
 
 ### Mutate
@@ -268,6 +268,46 @@ students_recoded <- mutate(students,
 * Reorder the rows (`arrange()`).
 * Pick variables by their names (`select()`).
 * Create new variables with functions of existing variables (`mutate()`).
-* Collapse many values down to a single summary (`summarise()`).
 
-Cleaning data files and extracting the most useful information is essential to any downstream steps such as plotting or analysis. Make sure you know exactly which variable types are in your tibbles / data frames! 
+Cleaning data files and extracting the most useful information is essential to any downstream steps such as plotting or analysis. Make sure you know exactly which variable types are in your tibbles / data frames!
+
+# Data processing pipelines
+
+A very useful feature in tidyverse is the pipe `%>%`. The pipe inputs the result from the left-hand side as the first argument of the right-hand side function: `filter(students, grade > 5.5)` becomes `students %>% filter(grade > 5.5)`. With the pipe, a set of processing steps becomes a neatly legible data processing pipeline!
+
+Different tasks we have performed on the students dataset can be done in one pipeline like so:
+
+```{r pipeline}
+students_dataset <-
+  read_xlsx("data/students.xlsx") %>% 
+  mutate(prog = recode(programme, "A" = "Science", "B" = "Social Science")) %>% 
+  filter(grade > 5.5) %>% 
+  arrange(programme, -grade) %>% 
+  select(student_number, prog, grade)
+
+students_dataset
+```
+
+In one statement, we have loaded the dataset from disk, recoded the programme variable, filtered only students that pass, reordered the rows and selected the relevant columns only. We did not need to save intermediate results or nest functions deeply.
+
+---
+
+__Create a data processing pipeline that loads the apps dataset, parses the number of downloads using `mutate` and `parse_number()`, shows only apps with more than 500 000 000 downloads, orders them by rating (best on top), and shows only the relevant columns (you can choose which are relevant).__
+
+---
+
+If you find duplicates, you may need to use `distinct(App, .keep_all = TRUE)` as the last step in your pipeline to remove duplicate app names.
+
+```{r bestapps, message = FALSE, include = params$answers}
+read_csv("data/googleplaystore.csv") %>% 
+  mutate(Downloads = parse_number(Installs)) %>% 
+  filter(Downloads > 5e8) %>% # 5e8 is the same as 5 x 10^8
+  arrange(-Rating) %>% 
+  select(App, Rating, Reviews, Downloads, Category) %>% 
+  distinct(App, .keep_all = TRUE)
+```
+
+# Grouping and summarisation
+
+We have now seen how we can transform and clean our datasets. The next step is to start exploring the dataset by computing relevant summary statistics, such as means, ranges, variances, differences, etc. We have already used the function `summary()` which comes with `R`, but `dplyr` has extra summary functionality in the form of the `summarise()` (or `summarize()`) verb.
+
