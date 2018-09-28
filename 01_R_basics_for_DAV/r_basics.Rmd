@@ -1,18 +1,20 @@
 ---
 title: "R Basics for DAV"
-author: ""
-date: ""
+params:
+  answers: true
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    theme: paper
   pdf_document:
     toc: true
     toc_depth: 1
     latex_engine: xelatex
-  html_document:
-    toc: true
-    toc_depth: 1
 ---
 
 # Introduction
@@ -37,7 +39,11 @@ abline(reg = result, lty = 2)
 
 RStudio is the de-facto standard integrated development environment (IDE) for `R`: a computer program that enables us to easily write programs, scripts, documents, and even entire blogs, websites, and journal articles using `R` in the background. 
 
-> __Open RStudio on your computer, and go to Tools > Global options to change the appearance settings to your preference__
+---
+
+1. __Open RStudio on your computer, and go to Tools > Global options to change the appearance settings to your preference__
+
+---
 
 ![One of the possible RStudio configurations - the Fira Code font with the Idle Fingers theme](images/rstudio.png)
 
@@ -52,7 +58,11 @@ In the bottom right, there is a pane with several tabs: the plots tab shows any 
 
 Functions are embedded within `packages`. An example of a package that comes with your installation of `R` is `stats`, which contains a variety of statistical functions. Any functions we will be using has documentation, which can be reached using the function `help()` or through the question mark `?`. 
 
-> __Run the following in the R console__
+---
+
+2. __Run the following in the R console__
+
+---
 
 ```{r help, eval = FALSE}
 ?t.test
@@ -60,11 +70,19 @@ Functions are embedded within `packages`. An example of a package that comes wit
 
 The help file will open in the bottom-right help pane, which shows how the function `t.test()` should be used. Help files usually contain what the arguments (input) mean, what the value (output) is, some details about its implementation, some related functions (in this case `prop.test`), and even some usage examples. Not all help files are this complete, but most give enough information to run the specific function you are interested in. 
 
-> __Get familiar with help files by searching for a few more functions, such as `plot()`, `lm()`, and `print()`__
+---
+
+3. __Get familiar with help files by searching for a few more functions, such as `plot()`, `lm()`, and `print()`__
+
+---
 
 Everyone uses help files extensively, even the most prolific `R` programmers. 
 
-> __Try to find out what the `prop.table()` function does by searching for it on the internet__
+---
+
+4. __Try to find out what the `prop.table()` function does by searching for it on the internet__
+
+---
 
 Everyone uses internet search extensively, even the most prolific `R` programmers. Don't be afraid to copy and paste.
 
@@ -73,8 +91,11 @@ Everyone uses internet search extensively, even the most prolific `R` programmer
 
 A feature we are going to use a lot is RStudio's projects. A project is a file folder with code, data, and other files related to a single project. An `R` project folder contains an `.Rproj` file which you can open from `RStudio`. This automatically sets that folder as the working directory, meaning any files in it can be loaded relative to this directory. 
 
-> __Open the file `01 - R basics for DAV.Rproj` in RStudio and run the following code in the console. Do you know where the file "sometext.txt" is located on your disk?__
+---
 
+5. __Open the file `01 - R basics for DAV.Rproj` in RStudio and run the following code in the console. Do you know where the file "sometext.txt" is located on your disk?__
+
+---
 
 ```{r readlines, eval = FALSE}
 print(readLines("data/sometext.txt"))
@@ -86,20 +107,30 @@ After opening an `R` project, RStudio shows the name of the project in the top-r
 knitr::include_graphics("images/projects.png")
 ```
 
+---
 
-> __In this course (and beyond!), always work in a project. For the remainder of this practical, we will work in the project `01 - R basics for DAV`.__
+6. __In this course (and beyond!), always work in a project. For the remainder of this practical, we will work in the project `01 - R basics for DAV`.__
 
+---
 
 
 # R Markdown
 
 In this course, we will do most of our programming in `.Rmd` files, R Markdown files. With R Markdown files, we can easily create documents which seamlessly combine text, code, and plots. The document you are reading right now was generated from an R Markdown file.
 
-> __Open the file `r_basics.Rmd` from the Files pane in RStudio.__
+---
+
+7. __Open the file `r_basics.Rmd` from the Files pane in RStudio.__
+
+---
 
 If you scroll through the file, you may see that there is a specific syntax associated with R Markdown files. At the start, there is some information about the document and how it should be output, and in the document itself is the text with a lot of pound signs (`#`), underscores (`_`) and backticks (\`). 
 
-> __Read through the following tutorials on rmarkdown.rstudio.com.__
+---
+
+8. __Read through the following tutorials on rmarkdown.rstudio.com.__
+
+---
 
 - [How It Works](https://rmarkdown.rstudio.com/lesson-2.html)
 - [Code Chunks](https://rmarkdown.rstudio.com/lesson-3.html)
@@ -107,15 +138,24 @@ If you scroll through the file, you may see that there is a specific syntax asso
 - [Output Formats](https://rmarkdown.rstudio.com/lesson-9.html)
 - [Cheatsheets](https://rmarkdown.rstudio.com/lesson-15.html)
 
-> __Play around with the default R Markdown template that appears when you create a new .Rmd file via File > New File > R Markdown.__
+---
+
+9. __Create a new R Markdown file in RStudio using `File > New File > R Markdown`. Play around with the file that appears.__
+
+---
 
 RStudio may ask you to install several packages. You should allow it to!
 
-> __Make sure you can output the file you created to a pdf using Knit > Knit to pdf.__
+
+---
+
+10. __Make sure you can output the R Markdown file you created to a pdf using `Knit > Knit to pdf` on top of the source pane. If there are errors, you may need to install a TeX distribution.__
+
+---
 
 The assignments in week 3 and week 10 need to be handed in as an R project folder with data, a `.Rmd` file, and the `.pdf` file generated from it.
 
-For the practicals, we will always start by opening the R project and do the assignments directly in the R Markdown file.
+From practical 2 onwards, we will always start by opening the R project and do the assignments directly in the R Markdown file. Under each assignment, you can insert an `R` chunk and input your code there. If you prefer, you may also work directly in a `.R` file for the practicals. Note that if you do this, you will still have to work with an `.Rmd` file for the assignments.
 
 
 # The `ISLR` package
@@ -127,14 +167,22 @@ dsets <- paste(ls("package:ISLR"), collapse = ", ")
 
 The first book we are using in this course is [Introduction to Statistical Learning](http://www-bcf.usc.edu/~gareth/ISL/), abbreviated as ISLR. The authors use several datasets throughout the book which are packaged in the `R` package `ISLR`. The datasets are: `r dsets`.
 
-> __Install and load the package in `R` by running the following in the console__
+---
+
+11. __Install and load the package in `R` by running the following in the console__
+
+---
 
 ```{r install_islr, eval = FALSE}
 install.packages("ISLR")
 library(ISLR)
 ```
 
-> __Look at the Default dataset by running the following in the console. What does this dataset contain?__
+---
+
+12. __Look at the Default dataset by running the following in the console. What does this dataset contain?__
+
+---
 
 ```{r default, eval = FALSE}
 View(Default)
@@ -145,7 +193,11 @@ View(Default)
 
 The second book we are using in this course is [Hadley Wickham's R for Data Science](http://r4ds.had.co.nz/), or R4DS. Nice to know: this entire book and its website were made using R Markdown! Hadley Wickham and R4DS use a specific _dialect_ of `R`, a set of packages called the tidyverse. Because these packages are very useful and great for data science, we will be using the tidyverse throughout this course.
 
-> __Install and load the packages from the tidyverse by running the following in the console__
+---
+
+13. __Install and load the packages from the tidyverse by running the following in the console__
+
+---
 
 ```{r install_tidy, eval = FALSE}
 install.packages("tidyverse")
@@ -153,20 +205,24 @@ library(tidyverse)
 tidyverse_packages()
 ```
 
-You can see that tidyverse contains many packages, some of which are loaded by default when tidyverse is loaded. We are mostly going to use `ggplot2` and `dplyr`. In the next practical, we are going to learn about how to use `dplyr` for data manipulation.
+You can see that tidyverse contains many packages, some of which are loaded by default when tidyverse is loaded. In the next practical, we are going to learn about how to use `readr` and `haven` for importing data and `dplyr` for data manipulation.
 
 # Code style
 
 Throughout this course, try to maintain a consistent and legible style for your code. This is very important as it will make your collaborators, as well as future you happy. Being able to read and understand your own code after a year of not looking at it is possible if you use consistent style and informative comments where necessary. 
 
-> __Read throught the [Google style guide](https://google.github.io/styleguide/Rguide.xml) for R__
+---
 
-Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
+14. __Read through the [Google style guide](https://google.github.io/styleguide/Rguide.xml) for R__
+
+---
+
+The most obvious deviation we will make from the google style guide is in naming things: `object_name` for variables and `do_something()` for functions are how we will be programming. Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
 
 
 # Conclusion
 
-If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02 - Data manipulation.Rproj` from its folder.
+If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02 - Data manipulation.Rproj` from its folder and then, from the Files pane, open the `.Rmd` file.
 
 
 

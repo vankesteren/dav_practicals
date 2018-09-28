@@ -1,0 +1,140 @@
+---
+title: "Data manipulation"
+author: ""
+date: ""
+params:
+  answers: true
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    theme: paper
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+```{r load_packages, message = FALSE, warning = FALSE}
+library(ISLR)
+library(tidyverse)
+library(haven)
+```
+
+# Data types
+
+There are several data types in `R`. Here is a table with the most common ones:
+
+| Type             | Short | Example                |
+| :--------------- | :---- | :--------------------- |
+| Integer          | int   | 0, 1, 2, 3, -4, -5     |
+| Numeric / Double | dbl   | 0.1, -2.5, 123.456     |
+| Character        | chr   | "dav is a cool course" |
+| Logical          | lgl   | TRUE / FALSE           |
+| Factor           | fct   | low, medium, high      |
+
+The `class()` function can give you an idea about what type of data each variable contains.
+
+---
+
+1. __Run the following code in `R` and inspect their data types using the `class()` function. Try to guess beforehand what their types will be!__
+
+---
+
+```{r 1}
+object_1 <- 1:5
+object_2 <- 1L:5L
+object_3 <- "-123.456"
+object_4 <- as.numeric(object_2)
+object_5 <- letters[object_1]
+object_6 <- as.factor(rep(object_5, 2))
+object_7 <- c(1, 2, 3, "4", "5", "6")
+```
+
+the factor data type is special to `R` and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in `object_6`.
+
+Vectors can have only a single data type. Note that the first three elements in `object_7` have been converted. We can convert to different data types using the `as.<class>()` functions. 
+
+---
+
+2. __Convert `object_7` back to a vector of numbers using the `as.numeric()` function__
+
+---
+
+```{r 2, include = params$answers}
+object_7 <- as.numeric(object_7)
+```
+
+# Lists
+
+A list is a collection of objects. The elements may have names, but it is not necessary. Each element of a list can have a different data type, unlike vectors. 
+
+---
+
+3. __Make a list called `objects` containing object 1 to 7 using the `list()` function.__
+
+---
+
+```{r 3, include = params$answers}
+objects <- list(object_1, object_2, object_3, object_4, object_5, object_6, 
+                object_7)
+```
+
+
+A special type of list is the `data.frame`. It is the same as a list, but each element is forced to have the same length. The elements of a `data.frame` are the columns of a dataset. In the tidyverse, `data.frame`s are called `tibble`s.
+
+---
+
+4. __Make a data frame out of `object_1`, `object_2`, and `object_5` using the `data.frame()` function__
+
+---
+
+```{r 4, include = params$answers}
+dat <- data.frame(Var1 = object_1, Var2 = object_2, Var3 = object_5)
+```
+
+
+# Loading data
+
+We are going to use a dataset from Kaggle - the Google play store apps data by user `lava18`. We have downloaded it into the data folder already from https://www.kaggle.com/lava18/google-play-store-apps (downloaded on 2018-09-28).
+
+Tidyverse contains many data loading functions -- each for their own file type -- in the packages `readr` (default file types) and `haven` (external file types such as from SPSS or Stata). The most common file type is `csv`, which is what we use here.
+
+---
+
+1. __Use the function `read_csv()` to import the file "data/googleplaystore.csv" and store it in a variable called `apps`.__
+
+---
+
+```{r readcsv, include = params$answers}
+apps <- read_csv("data/googleplaystore.csv")
+```
+
+If necessary, use the help files. These import functions from the tidyverse are fast and safe: they display informative errors if anything goes wrong. `read_csv()` also displays a message with information on how each column is imported: which variable type each column gets.
+
+---
+
+2. __Did any column get a variable type you did not expect?__
+
+---
+
+```{r ok, include = params$answers}
+# Several columns such as price and number of installs were imported as 
+# character data types, but they are numbers.
+```
+
+---
+
+3. __Use the function `head()` to look at the first few rows of the `apps` dataset__
+
+---
+
+```{r head, include = params$answers}
+head(apps)
+```
+
+
