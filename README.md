@@ -17,14 +17,13 @@ You are going to be working inside the practicals folder. [Download the folder](
     <td> R basics for DAV </td>
     <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
     <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 02 </td>
     <td> Data manipulation & EDA </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/02_Data_manipulation/data_manipulation.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/02_Data_manipulation/data_manipulation.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/02_Data_manipulation/data_manipulation_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 03 </td>

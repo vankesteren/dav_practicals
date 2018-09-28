@@ -1,9 +1,7 @@
 ---
 title: "Data manipulation"
-author: ""
-date: ""
 params:
-  answers: true
+  answers: false
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
@@ -19,11 +17,17 @@ output:
     latex_engine: xelatex
 ---
 
+# Introduction
+
+This is the first programming practical. If you haven't yet done so, open the project file `02_Data_manipulation.Rproj` in RStudio. You can choose to write the answers to your exercises in either an `.R` file or in a `.Rmd` file. There are example answer files provided in the project directory (`example_answers.Rmd` and `example_answers.R`). You can open these from the files pane. While working through the exercises, write down your code in one of these files. Use proper style and provide comments so you can read it back later and still understand what is happening.
+
+The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before continuing!
 ```{r load_packages, message = FALSE, warning = FALSE}
 library(ISLR)
 library(tidyverse)
 library(haven)
 ```
+
 
 # Data types
 
