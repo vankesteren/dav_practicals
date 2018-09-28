@@ -1,23 +1,21 @@
 ---
 title: "Data manipulation"
 params:
-  answers: false
+  answers: true
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
-  pdf_document:
-    toc: true
-    toc_depth: 1
-    latex_engine: xelatex
   html_document:
-    #   "--output=data_manipulation_answers.html"
-    # ] 
     toc: true
     toc_depth: 1
     toc_float: true
     theme: paper
-    # pandoc_args: [
+    pandoc_args: "--output=data_manipulation_answers.html"
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
 ---
 
 # Introduction
