@@ -1503,10 +1503,11 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>This is the first programming practical. If you haven’t yet done so, open the project file <code>02_Data_manipulation.Rproj</code> in RStudio. You can choose to write the answers to your exercises in either an <code>.R</code> file or in an <code>.Rmd</code> file. Example answer files are provided in the project directory (<code>example_answers.Rmd</code> and <code>example_answers.R</code>). You can open these from the files pane and use them as a starting point. While working through the exercises, write down your code in one of these files. Use proper style and provide comments so you can read it back later and still understand what is happening.</p>
-<p>The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before you continue.</p>
+<p>The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before you continue. If there are packages that you have not yet installed, first install them with <code>install.packages()</code>.</p>
 <pre class="r"><code>library(ISLR)
 library(tidyverse)
-library(haven)</code></pre>
+library(haven)
+library(readxl)</code></pre>
 </div>
 <div id="data-types" class="section level1">
 <h1>Data types</h1>
@@ -1542,7 +1543,7 @@ library(haven)</code></pre>
 </tr>
 <tr class="odd">
 <td align="left">Factor</td>
-<td align="left">fct</td>
+<td align="left">fctr</td>
 <td align="left">low, medium, high</td>
 </tr>
 </tbody>
@@ -1576,33 +1577,137 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <li><strong>Make a list called <code>objects</code> containing object 1 to 7 using the <code>list()</code> function.</strong></li>
 </ol>
 <hr />
-<p>A special type of list is the <code>data.frame</code>. It is the same as a list, but each element is forced to have the same length. The elements of a <code>data.frame</code> are the columns of a dataset. In the tidyverse, <code>data.frame</code>s are called <code>tibble</code>s.</p>
+<p>You can select elements of a list using its name (<code>objects$elementname</code>) or using its index (<code>objects[[1]]</code> for the first element).</p>
+<p>A special type of list is the <code>data.frame</code>. It is the same as a list, but each element is forced to have the same length and a name. The elements of a <code>data.frame</code> are the columns of a dataset. In the tidyverse, <code>data.frame</code>s are called <code>tibble</code>s and they are printed in a nice way, as we will see later.</p>
 <hr />
 <ol start="4" style="list-style-type: decimal">
 <li><strong>Make a data frame out of <code>object_1</code>, <code>object_2</code>, and <code>object_5</code> using the <code>data.frame()</code> function</strong></li>
 </ol>
 <hr />
+<p>Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name <code>df$columname</code> or their index <code>df[[1]]</code>. Additionally, the tenth row can be selected using <code>df[10, ]</code>, the second column using <code>df[, 2]</code> and cell number 10, 2 can be accessed using <code>df[10, 2]</code>. This is because data frames also behave like the <code>matrix</code> data type in addition to the <code>list</code> type.</p>
 </div>
-<div id="loading-data" class="section level1">
-<h1>Loading data</h1>
+<div id="loading-viewing-and-summarising-data" class="section level1">
+<h1>Loading, viewing, and summarising data</h1>
 <p>We are going to use a dataset from Kaggle - the Google play store apps data by user <code>lava18</code>. We have downloaded it into the data folder already from <a href="https://www.kaggle.com/lava18/google-play-store-apps" class="uri">https://www.kaggle.com/lava18/google-play-store-apps</a> (downloaded on 2018-09-28).</p>
-<p>Tidyverse contains many data loading functions – each for their own file type – in the packages <code>readr</code> (default file types) and <code>haven</code> (external file types such as from SPSS or Stata). The most common file type is <code>csv</code>, which is what we use here.</p>
+<p>Tidyverse contains many data loading functions – each for their own file type – in the packages <code>readr</code> (default file types), <code>readxl</code> (excel files), and <code>haven</code> (external file types such as from SPSS or Stata). The most common file type is <code>csv</code>, which is what we use here.</p>
 <hr />
-<ol style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><strong>Use the function <code>read_csv()</code> to import the file “data/googleplaystore.csv” and store it in a variable called <code>apps</code>.</strong></li>
 </ol>
 <hr />
 <p>If necessary, use the help files. These import functions from the tidyverse are fast and safe: they display informative errors if anything goes wrong. <code>read_csv()</code> also displays a message with information on how each column is imported: which variable type each column gets.</p>
 <hr />
-<ol start="2" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li><strong>Did any column get a variable type you did not expect?</strong></li>
 </ol>
 <hr />
 <hr />
-<ol start="3" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><strong>Use the function <code>head()</code> to look at the first few rows of the <code>apps</code> dataset</strong></li>
 </ol>
 <hr />
+<hr />
+<ol start="8" style="list-style-type: decimal">
+<li><strong>Repeat steps 5, 6, and 7 but now for “data/students.xlsx” (NB: You’ll need a function from the package <code>readxl</code>). Also try out the function <code>tail()</code> and <code>View()</code> (with a capital V).</strong></li>
+</ol>
+<hr />
+<hr />
+<ol start="9" style="list-style-type: decimal">
+<li><strong>Create a summary of the three columns in the students dataset using the <code>summary()</code> function. What is the range of the grades achieved by the students?</strong></li>
+</ol>
+<hr />
+</div>
+<div id="data-transformation-with-dplyr-verbs" class="section level1">
+<h1>Data transformation with <code>dplyr</code> verbs</h1>
+<p>The tidyverse package <code>dplyr</code> contains functions to transform, rearrange, and filter data frames.</p>
+<div id="filter" class="section level3">
+<h3>Filter</h3>
+<p>The first verb is <code>filter()</code>, which selects rows from a data frame. <a href="http://r4ds.had.co.nz/transform.html#comparisons">Chapter 5 of R4DS</a> states that to use filtering effectively, you have to know how to select the observations that you want using the comparison operators. R provides the standard suite: <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>!=</code> (not equal), and <code>==</code> (equal).</p>
+<p>When you’re starting out with R, the easiest mistake to make is to use <code>=</code> instead of <code>==</code> when testing for equality.</p>
+<hr />
+<ol start="10" style="list-style-type: decimal">
+<li><strong>Look at the help pages for <code>filter()</code> (especially the examples) and show the students with a grade lower than 5.5</strong></li>
+</ol>
+<hr />
+<hr />
+<ol start="11" style="list-style-type: decimal">
+<li><strong>Show only the students with a grade higher than 8 from programme A</strong></li>
+</ol>
+<hr />
+<p>If you are unsure how to proceed, read <a href="http://r4ds.had.co.nz/transform.html#logical-operators">Section 5.2.2 from R4DS</a>.</p>
+</div>
+<div id="arrange" class="section level3">
+<h3>Arrange</h3>
+<p>The second verb is <code>arrange()</code>, which sorts a data frame by one or more columns.</p>
+<hr />
+<ol start="12" style="list-style-type: decimal">
+<li><strong>Sort the students dataset such that the students from programme A are on top of the data frame and within the programmes the highest grades come first.</strong></li>
+</ol>
+<hr />
+</div>
+<div id="select" class="section level3">
+<h3>Select</h3>
+<p>The third verb is <code>select()</code>, which selects columns of interest.</p>
+<hr />
+<ol start="13" style="list-style-type: decimal">
+<li><strong>Show only the <code>student_number</code> and <code>programme</code> columns from the students dataset</strong></li>
+</ol>
+<hr />
+</div>
+<div id="mutate" class="section level3">
+<h3>Mutate</h3>
+<p>With <code>mutate()</code> you can compute new columns and transform existing columns as functions of the columns in your dataset. For example, we may create a new logical column in the students dataset to indicate whether a student has passed or failed:</p>
+<pre class="r"><code>students &lt;- mutate(students, pass = grade &gt; 5.5)
+students</code></pre>
+<pre><code>## # A tibble: 37 x 4
+##    student_number grade programme pass 
+##             &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;lgl&gt;
+##  1        5117250  6.54 A         TRUE 
+##  2        6562582  7.57 A         TRUE 
+##  3        6000241  6.08 B         TRUE 
+##  4        4862862  7.71 A         TRUE 
+##  5        6561723  6.57 B         TRUE 
+##  6        5625916  7.90 B         TRUE 
+##  7        4096023  5.92 A         TRUE 
+##  8        6114656  5.16 A         FALSE
+##  9        5265402  5.49 B         FALSE
+## 10        5977188  7.26 B         TRUE 
+## # ... with 27 more rows</code></pre>
+<p>Now, the students dataset has an extra column named “pass”.</p>
+<p>You can also transform existing columns with the <code>mutate()</code> function. For example, we may want to transform the programme column to an actual programme name according to this table:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="left">Science</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="left">Social Science</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<ol start="14" style="list-style-type: decimal">
+<li><strong>Use <code>mutate()</code> and <code>recode()</code> to change the codes in the programme column of the students dataset to their names. Store the result in a variable called <code>students_recoded</code></strong></li>
+</ol>
+<hr />
+<p><a href="http://r4ds.had.co.nz/transform.html#dplyr-basics">Chapter 5 of R4DS</a> neatly summarises the five key dplyr functions that allow you to solve the vast majority of your data manipulation challenges:</p>
+<ul>
+<li>Pick observations by their values (<code>filter()</code>).</li>
+<li>Reorder the rows (<code>arrange()</code>).</li>
+<li>Pick variables by their names (<code>select()</code>).</li>
+<li>Create new variables with functions of existing variables (<code>mutate()</code>).</li>
+<li>Collapse many values down to a single summary (<code>summarise()</code>).</li>
+</ul>
+<p>Cleaning data files and extracting the most useful information is essential to any downstream steps such as plotting or analysis. Make sure you know exactly which variable types are in your tibbles / data frames!</p>
+</div>
 </div>
 
 

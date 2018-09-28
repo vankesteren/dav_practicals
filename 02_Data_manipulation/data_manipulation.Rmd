@@ -11,7 +11,7 @@ output:
     toc_depth: 1
     toc_float: true
     theme: paper
-    pandoc_args: "--output=data_manipulation_answers.html"
+    pandoc_args: --output=data_manipulation_answers.html
   pdf_document:
     toc: true
     toc_depth: 1
@@ -22,12 +22,14 @@ output:
 
 This is the first programming practical. If you haven't yet done so, open the project file `02_Data_manipulation.Rproj` in RStudio. You can choose to write the answers to your exercises in either an `.R` file or in an `.Rmd` file. Example answer files are provided in the project directory (`example_answers.Rmd` and `example_answers.R`). You can open these from the files pane and use them as a starting point. While working through the exercises, write down your code in one of these files. Use proper style and provide comments so you can read it back later and still understand what is happening.
 
-The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before you continue.
+The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before you continue. If there are packages that you have not yet installed, first install them with `install.packages()`.
 ```{r load_packages, message = FALSE, warning = FALSE}
 library(ISLR)
 library(tidyverse)
 library(haven)
+library(readxl)
 ```
+
 
 
 # Data types
@@ -40,7 +42,7 @@ There are several data types in `R`. Here is a table with the most common ones:
 | Numeric / Double | dbl   | 0.1, -2.5, 123.456     |
 | Character        | chr   | "dav is a cool course" |
 | Logical          | lgl   | TRUE / FALSE           |
-| Factor           | fct   | low, medium, high      |
+| Factor           | fctr  | low, medium, high      |
 
 The `class()` function can give you an idea about what type of data each variable contains.
 
@@ -89,8 +91,9 @@ objects <- list(object_1, object_2, object_3, object_4, object_5, object_6,
                 object_7)
 ```
 
+You can select elements of a list using its name (`objects$elementname`) or using its index (`objects[[1]]` for the first element).
 
-A special type of list is the `data.frame`. It is the same as a list, but each element is forced to have the same length. The elements of a `data.frame` are the columns of a dataset. In the tidyverse, `data.frame`s are called `tibble`s.
+A special type of list is the `data.frame`. It is the same as a list, but each element is forced to have the same length and a name. The elements of a `data.frame` are the columns of a dataset. In the tidyverse, `data.frame`s are called `tibble`s and they are printed in a nice way, as we will see later.
 
 ---
 
@@ -100,18 +103,20 @@ A special type of list is the `data.frame`. It is the same as a list, but each e
 
 ```{r 4, include = params$answers}
 dat <- data.frame(Var1 = object_1, Var2 = object_2, Var3 = object_5)
+dat
 ```
 
+Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name `df$columname` or their index `df[[1]]`. Additionally, the tenth row can be selected using `df[10, ]`, the second column using `df[, 2]` and cell number 10, 2 can be accessed using `df[10, 2]`. This is because data frames also behave like the `matrix` data type in addition to the `list` type.
 
-# Loading data
+# Loading, viewing, and summarising data
 
 We are going to use a dataset from Kaggle - the Google play store apps data by user `lava18`. We have downloaded it into the data folder already from https://www.kaggle.com/lava18/google-play-store-apps (downloaded on 2018-09-28).
 
-Tidyverse contains many data loading functions -- each for their own file type -- in the packages `readr` (default file types) and `haven` (external file types such as from SPSS or Stata). The most common file type is `csv`, which is what we use here.
+Tidyverse contains many data loading functions -- each for their own file type -- in the packages `readr` (default file types), `readxl` (excel files), and `haven` (external file types such as from SPSS or Stata). The most common file type is `csv`, which is what we use here.
 
 ---
 
-1. __Use the function `read_csv()` to import the file "data/googleplaystore.csv" and store it in a variable called `apps`.__
+5. __Use the function `read_csv()` to import the file "data/googleplaystore.csv" and store it in a variable called `apps`.__
 
 ---
 
@@ -123,7 +128,7 @@ If necessary, use the help files. These import functions from the tidyverse are 
 
 ---
 
-2. __Did any column get a variable type you did not expect?__
+6. __Did any column get a variable type you did not expect?__
 
 ---
 
@@ -134,7 +139,7 @@ If necessary, use the help files. These import functions from the tidyverse are 
 
 ---
 
-3. __Use the function `head()` to look at the first few rows of the `apps` dataset__
+7. __Use the function `head()` to look at the first few rows of the `apps` dataset__
 
 ---
 
@@ -143,3 +148,126 @@ head(apps)
 ```
 
 
+---
+
+8. __Repeat steps 5, 6, and 7 but now for "data/students.xlsx" (NB: You'll need a function from the package `readxl`). Also try out the function `tail()` and `View()` (with a capital V).__
+
+---
+
+```{r readxl, include = params$answers}
+students <- read_xlsx("data/students.xlsx")
+head(students)
+tail(students)
+```
+
+---
+
+9. __Create a summary of the three columns in the students dataset using the `summary()` function. What is the range of the grades achieved by the students?__
+
+---
+
+```{r summary, include = params$answers}
+summary(students)
+```
+
+
+# Data transformation with `dplyr` verbs
+
+
+The tidyverse package `dplyr` contains functions to transform, rearrange, and filter data frames. 
+
+### Filter
+The first verb is `filter()`, which selects rows from a data frame. [Chapter 5 of R4DS](http://r4ds.had.co.nz/transform.html#comparisons) states that to use filtering effectively, you have to know how to select the observations that you want using the comparison operators. R provides the standard suite: `>`, `>=`, `<`, `<=`, `!=` (not equal), and `==` (equal). 
+
+When you're starting out with R, the easiest mistake to make is to use `=` instead of `==` when testing for equality. 
+
+
+---
+
+10. __Look at the help pages for `filter()` (especially the examples) and show the students with a grade lower than 5.5__
+
+---
+
+```{r filter1, include = params$answers}
+filter(students, grade < 5.5)
+```
+
+---
+
+11. __Show only the students with a grade higher than 8 from programme A__
+
+---
+
+If you are unsure how to proceed, read [Section 5.2.2 from R4DS](http://r4ds.had.co.nz/transform.html#logical-operators).
+
+```{r filter2, include = params$answers}
+filter(students, grade > 8, programme == "A")
+```
+
+### Arrange
+The second verb is `arrange()`, which sorts a data frame by one or more columns.
+
+---
+
+12. __Sort the students dataset such that the students from programme A are on top of the data frame and within the programmes the highest grades come first.__
+
+---
+
+```{r arrange, include = params$answers}
+arrange(students, programme, -grade)
+```
+
+
+### Select
+The third verb is `select()`, which selects columns of interest.
+
+---
+
+13. __Show only the `student_number` and `programme` columns from the students dataset__ 
+
+---
+
+```{r select, include = params$answers}
+select(students, student_number, programme)
+# or, equivalently: select(stud, -grade)
+```
+
+### Mutate
+With `mutate()` you can compute new columns and transform existing columns as functions of the columns in your dataset. For example, we may create a new logical column in the students dataset to indicate whether a student has passed or failed:
+
+```{r passfail}
+students <- mutate(students, pass = grade > 5.5)
+students
+```
+
+Now, the students dataset has an extra column named "pass".
+
+You can also transform existing columns with the `mutate()` function. For example, we may want to transform the programme column to an actual programme name according to this table:
+
+| Code | Name           |
+| :--- | :------------- |
+| A    | Science        |
+| B    | Social Science |
+
+---
+
+14. __Use `mutate()` and `recode()` to change the codes in the programme column of the students dataset to their names. Store the result in a variable called `students_recoded`__
+
+---
+
+```{r recode, include = params$answers}
+students_recoded <- mutate(students, 
+  programme = recode(programme, "A" = "Science", "B" = "Social Science")
+)
+```
+
+
+[Chapter 5 of R4DS](http://r4ds.had.co.nz/transform.html#dplyr-basics) neatly summarises the five key dplyr functions that allow you to solve the vast majority of your data manipulation challenges:
+
+* Pick observations by their values (`filter()`).
+* Reorder the rows (`arrange()`).
+* Pick variables by their names (`select()`).
+* Create new variables with functions of existing variables (`mutate()`).
+* Collapse many values down to a single summary (`summarise()`).
+
+Cleaning data files and extracting the most useful information is essential to any downstream steps such as plotting or analysis. Make sure you know exactly which variable types are in your tibbles / data frames! 
