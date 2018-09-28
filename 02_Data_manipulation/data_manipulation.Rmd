@@ -6,22 +6,25 @@ mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
-  html_document:
-    toc: true
-    toc_depth: 1
-    toc_float: true
-    theme: paper
   pdf_document:
     toc: true
     toc_depth: 1
     latex_engine: xelatex
+  html_document:
+    #   "--output=data_manipulation_answers.html"
+    # ] 
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    theme: paper
+    # pandoc_args: [
 ---
 
 # Introduction
 
-This is the first programming practical. If you haven't yet done so, open the project file `02_Data_manipulation.Rproj` in RStudio. You can choose to write the answers to your exercises in either an `.R` file or in a `.Rmd` file. There are example answer files provided in the project directory (`example_answers.Rmd` and `example_answers.R`). You can open these from the files pane. While working through the exercises, write down your code in one of these files. Use proper style and provide comments so you can read it back later and still understand what is happening.
+This is the first programming practical. If you haven't yet done so, open the project file `02_Data_manipulation.Rproj` in RStudio. You can choose to write the answers to your exercises in either an `.R` file or in an `.Rmd` file. Example answer files are provided in the project directory (`example_answers.Rmd` and `example_answers.R`). You can open these from the files pane and use them as a starting point. While working through the exercises, write down your code in one of these files. Use proper style and provide comments so you can read it back later and still understand what is happening.
 
-The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before continuing!
+The practicals always start with the packages we are going to use. Be sure to run these lines in your session to load their functions before you continue.
 ```{r load_packages, message = FALSE, warning = FALSE}
 library(ISLR)
 library(tidyverse)

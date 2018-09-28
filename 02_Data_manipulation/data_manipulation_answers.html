@@ -1567,6 +1567,7 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <li><strong>Convert <code>object_7</code> back to a vector of numbers using the <code>as.numeric()</code> function</strong></li>
 </ol>
 <hr />
+<pre class="r"><code>object_7 &lt;- as.numeric(object_7)</code></pre>
 </div>
 <div id="lists" class="section level1">
 <h1>Lists</h1>
@@ -1576,12 +1577,15 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <li><strong>Make a list called <code>objects</code> containing object 1 to 7 using the <code>list()</code> function.</strong></li>
 </ol>
 <hr />
+<pre class="r"><code>objects &lt;- list(object_1, object_2, object_3, object_4, object_5, object_6, 
+                object_7)</code></pre>
 <p>A special type of list is the <code>data.frame</code>. It is the same as a list, but each element is forced to have the same length. The elements of a <code>data.frame</code> are the columns of a dataset. In the tidyverse, <code>data.frame</code>s are called <code>tibble</code>s.</p>
 <hr />
 <ol start="4" style="list-style-type: decimal">
 <li><strong>Make a data frame out of <code>object_1</code>, <code>object_2</code>, and <code>object_5</code> using the <code>data.frame()</code> function</strong></li>
 </ol>
 <hr />
+<pre class="r"><code>dat &lt;- data.frame(Var1 = object_1, Var2 = object_2, Var3 = object_5)</code></pre>
 </div>
 <div id="loading-data" class="section level1">
 <h1>Loading data</h1>
@@ -1592,17 +1596,48 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <li><strong>Use the function <code>read_csv()</code> to import the file “data/googleplaystore.csv” and store it in a variable called <code>apps</code>.</strong></li>
 </ol>
 <hr />
+<pre class="r"><code>apps &lt;- read_csv(&quot;data/googleplaystore.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   App = col_character(),
+##   Category = col_character(),
+##   Rating = col_double(),
+##   Reviews = col_integer(),
+##   Size = col_character(),
+##   Installs = col_character(),
+##   Type = col_character(),
+##   Price = col_character(),
+##   `Content Rating` = col_character(),
+##   Genres = col_character(),
+##   `Last Updated` = col_character(),
+##   `Current Ver` = col_character(),
+##   `Android Ver` = col_character()
+## )</code></pre>
 <p>If necessary, use the help files. These import functions from the tidyverse are fast and safe: they display informative errors if anything goes wrong. <code>read_csv()</code> also displays a message with information on how each column is imported: which variable type each column gets.</p>
 <hr />
 <ol start="2" style="list-style-type: decimal">
 <li><strong>Did any column get a variable type you did not expect?</strong></li>
 </ol>
 <hr />
+<pre class="r"><code># Several columns such as price and number of installs were imported as 
+# character data types, but they are numbers.</code></pre>
 <hr />
 <ol start="3" style="list-style-type: decimal">
 <li><strong>Use the function <code>head()</code> to look at the first few rows of the <code>apps</code> dataset</strong></li>
 </ol>
 <hr />
+<pre class="r"><code>head(apps)</code></pre>
+<pre><code>## # A tibble: 6 x 13
+##   App   Category Rating Reviews Size  Installs Type  Price `Content Rating`
+##   &lt;chr&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;           
+## 1 Phot~ ART_AND~    4.1     159 19M   10,000+  Free  0     Everyone        
+## 2 Colo~ ART_AND~    3.9     967 14M   500,000+ Free  0     Everyone        
+## 3 &quot;U L~ ART_AND~    4.7   87510 8.7M  5,000,0~ Free  0     Everyone        
+## 4 Sket~ ART_AND~    4.5  215644 25M   50,000,~ Free  0     Teen            
+## 5 Pixe~ ART_AND~    4.3     967 2.8M  100,000+ Free  0     Everyone        
+## 6 Pape~ ART_AND~    4.4     167 5.6M  50,000+  Free  0     Everyone        
+## # ... with 4 more variables: Genres &lt;chr&gt;, `Last Updated` &lt;chr&gt;, `Current
+## #   Ver` &lt;chr&gt;, `Android Ver` &lt;chr&gt;</code></pre>
 </div>
 
 
