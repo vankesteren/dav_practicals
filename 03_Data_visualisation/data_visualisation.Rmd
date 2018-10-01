@@ -1,0 +1,212 @@
+---
+title: "Data manipulation"
+params:
+  answers: true
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    pandoc_args: --output=data_visualisation_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+
+In this practical, we will learn how to visualise data after we have cleaned up our datasets using the `dplyr` verbs from the previous practical. `filter()`, `arrange()`, `mutate()`, `select()`, `summarise()`. For the visualisations, we will be using a package that implements the grammar of graphics: `ggplot2`. 
+
+Don't forget to open the project file `03_Data_visualisation.Rproj` and to create your `.Rmd` or `.R` file to work in.
+
+```{r load_packages, message = FALSE, warning = FALSE}
+library(ISLR)
+library(tidyverse)
+```
+
+An excellent reference manual for `ggplot` can be found on the tidyverse website: [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/)
+
+# What is `ggplot`
+
+Plots can be made in `R` without the use of `ggplot` using `plot()`, `hist()` or `barplot()` and related functions. Here is an example of each on the `Hitters` dataset from `ISLR`:
+
+```{r baseplots}
+# Get an idea of what the Hitters dataset looks like
+head(Hitters)
+
+# histogram of the distribution of salary
+hist(Hitters$Salary, xlab = "Salary in thousands of dollars")
+
+# barplot of how many members in each league
+barplot(table(Hitters$League))
+
+
+# number of career home runs vs 1986 home runs
+plot(x = Hitters$Hits, y = Hitters$HmRun, 
+     xlab = "Hits", ylab = "Home runs")
+```
+
+These plots are informative and useful for visually inspecting the dataset, and they each have a specific syntax associated with them. `ggplot` has a more unified approach to plotting, where you build up a plot layer by layer using the `+` operator:
+
+```{r ggplot1}
+homeruns_plot <- 
+  ggplot(Hitters, aes(x = Hits, y = HmRun)) +
+  geom_point() +
+  labs(x = "Hits", y = "Home runs")
+
+homeruns_plot
+```
+
+As introduced in the lectures, a `ggplot` object is built up in different layers:
+
+1. input the dataset to a `ggplot()` function call
+2. construct aesthetic mappings
+3. add (geometric) components to your plot that use these mappings
+4. add labels, themes, visuals.
+
+
+Because of this layered syntax, it is then easy to add elements like these fancy density lines, a title, and a different theme:
+
+```{r ggplot2}
+homeruns_plot + 
+  geom_density_2d() +
+  labs(title = "Cool density and scatter plot of baseball data") +
+  theme_minimal()
+```
+
+In conclusion, `ggplot` objects are easy to manipulate and they force a principled approach to data visualisation. In this practical, we will learn how to construct them.
+
+---
+
+__Name the aesthetics, geoms, scales, and facets of the above visualisation. Also name any statistical transformations or special coordinate systems.__
+
+---
+
+```{r question}
+# Aesthetics: 
+#   number of hits mapped to x-position
+#   number of home runs mapped to y-position
+# Geoms: points and contour lines
+# Scales:
+#   x-axis: continuous
+#   y-axis: continuous
+# Facets: None
+# Statistical transformations: None
+# Special coordinate system: None (just cartesian)
+```
+
+
+# Aesthetics and data preparation
+
+The first step in constructing a `ggplot` is the preparation of your data and the mapping of variables to aesthetics. In the `homeruns_plot`, we used an existing data frame, the `Hitters` dataset. 
+
+The data frame needs to have proper column names and the types of the variables in the data frame need to be correctly specified. Numbers should be `numerics`, categories should be `factors`, and names or identifiers should be `character` variables. `ggplot()` _always_ expects a data frame, which may feel awfully strict, but it allows for excellent flexibility in the remaining plotting steps.
+
+---
+
+__Run the code below to generate data. There will be three data vectors in your environment. Put them in a data frame for entering it in a `ggplot()` call using either the `data.frame()` or the `tibble()` function. Give informative names and make sure the types are correct (use the `as.<type>()` functions). Name the result `gg_students`__
+
+---
+
+```{r datavecs}
+student_grade  <- rnorm(32, 7)
+student_number <- round(runif(32) * 2e6 + 5e6)
+programme      <- sample(c("Science", "Social Science"), 32, replace = TRUE)
+```
+
+```{r prepare}
+gg_students <- tibble(
+  number = as.character(student_number), # an identifier
+  grade  = student_grade,                # already the correct type.
+  prog   = as.factor(programme)          # categories should be factors.
+)
+
+head(gg_students)
+
+# note that if you use data.frame(), you need to set the argument 
+# stringsAsFactors to FALSE to get student number to be a character.
+# tibble() does this by default.
+```
+
+
+Mapping aesthetics is usually done in the main `ggplot()` call. Aesthetic mappings are the second argument to the function, after the data frame. 
+
+---
+
+__Replicate the first `homeruns_plot`, but map the `Hits` to the y-axis and the `HmRun` to the x-axis instead.__
+
+---
+
+
+```{r hmrn2}
+ggplot(Hitters, aes(x = HmRun, y = Hits)) +
+  geom_point() +
+  labs(x = "Hits", y = "Home runs")
+```
+
+---
+
+__Recreate the same plot once more, but now also map the variable `League` to the `colour` aesthetic and the variable `Salary` to the `size` aesthetic__
+
+---
+
+```{r hmrn3}
+ggplot(Hitters, aes(x = HmRun, y = Hits, colour = League, size = Salary)) +
+  geom_point() +
+  labs(x = "Hits", y = "Home runs")
+```
+
+Examples of aesthetics are:
+
+- x
+- y
+- alpha (transparency)
+- colour
+- fill
+- group
+- shape
+- size
+- stroke
+
+
+# Geoms
+
+Up until now we have used two geoms: contour lines and points. The geoms in `ggplot2` are added via the `geom_<geomtype>()` functions. Each geom has a required aesthetic mapping to work. For example, `geom_point()` needs at least and x and y position mapping, as you can read [here](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics).
+
+---
+
+__Look at the many different geoms on the [reference website](https://ggplot2.tidyverse.org/reference/#section-layer-geoms).__
+
+---
+
+There are two types of geoms: 
+
+- geoms which perform a transformation of the data beforehand, such as `geom_density_2d()` which calculates contour lines from x and y positions.
+- geoms which do not transform data beforehand, but use the aesthetic mapping directly, such as `geom_point()`.
+
+
+# 
+One of the most useful geoms is `geom_boxplot()`.
+
+---
+
+__Create a boxplot of student grades per programme in the `gg_students` dataset you made earlier: map the programme variable to the x position and the grade to the y position. For extra visual aid, you can additionally map the programme variable to the fill aesthetic__
+
+---
+
+```{r boxplot}
+gg_students %>% 
+  ggplot(aes(x = prog, y = grade, fill = prog)) +
+  geom_boxplot() +
+  theme_minimal()
+```
+
+---
+
+__Does the `geom_boxplot()` transform the 
