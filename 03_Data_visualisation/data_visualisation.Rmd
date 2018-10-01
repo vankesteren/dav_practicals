@@ -110,11 +110,12 @@ The data frame needs to have proper column names and the types of the variables 
 
 ---
 
-__Run the code below to generate data. There will be three data vectors in your environment. Put them in a data frame for entering it in a `ggplot()` call using either the `data.frame()` or the `tibble()` function. Give informative names and make sure the types are correct (use the `as.<type>()` functions). Name the result `gg_students`__
+__Run the code below to generate data. There will be three vectors in your environment. Put them in a data frame for entering it in a `ggplot()` call using either the `data.frame()` or the `tibble()` function. Give informative names and make sure the types are correct (use the `as.<type>()` functions). Name the result `gg_students`__
 
 ---
 
 ```{r datavecs}
+set.seed(1234)
 student_grade  <- rnorm(32, 7)
 student_number <- round(runif(32) * 2e6 + 5e6)
 programme      <- sample(c("Science", "Social Science"), 32, replace = TRUE)
@@ -191,8 +192,75 @@ There are two types of geoms:
 - geoms which do not transform data beforehand, but use the aesthetic mapping directly, such as `geom_point()`.
 
 
-# 
-One of the most useful geoms is `geom_boxplot()`.
+# Visual exploratory data analysis
+Several types of plots are useful for exploratory data analysis. In this section, you will construct different plots to get a feel for the two datasets we use in this practical: `Hitters` and `gg_students`. One of the most common tasks is to look at the distributions of variables in your dataset.
+
+## Histogram
+
+---
+
+__Use `geom_histogram()` to create a histogram of the grades of the students in the `gg_students` dataset. Play around with the `binwidth` argument of the `geom_histogram()` function.__
+
+---
+
+
+```{r geomhist}
+gg_students %>% 
+  ggplot(aes(x = grade)) +
+  geom_histogram(binwidth = .5)
+```
+
+
+## Density
+
+
+The continuous equivalent of the histogram is the density geom.
+---
+
+__Use `geom_density()` to create a density plot of the grades of the students in the `gg_students` dataset. Add the argument `fill = "light seagreen"` to `geom_density()`.__
+
+---
+
+```{r geomdens}
+gg_students %>% 
+  ggplot(aes(x = grade)) +
+  geom_density(fill = "light seagreen")
+```
+
+
+The downside of only looking at the density is that it is an abstraction from the raw data. We can add a raw data display in the form of rug marks.
+
+---
+
+__Add rug marks to the density plot through `geom_rug()`. You can edit the `colour` and `size` of the rug marks using those arguments within the `geom_rug()` function.__
+
+---
+
+```{r geomdens2}
+gg_students %>% 
+  ggplot(aes(x = grade)) +
+  geom_density(fill = "light seagreen") +
+  geom_rug(size = 1, colour = "light seagreen")
+```
+
+---
+
+__Increase the data to ink ratio by removing the y axis label, setting the theme to `theme_minimal()`, and removing the border of the density polygon. Also set the limits of the x-axis to go from 0 to 10 using the `xlim()` function, because those are the plausible values for a student grade.__
+
+---
+
+```{r geomdens3}
+gg_students %>% 
+  ggplot(aes(x = grade)) +
+  geom_density(fill = "light seagreen", colour = NA) +
+  geom_rug(size = 1, colour = "light seagreen") +
+  theme_minimal() +
+  labs(y = "") +
+  xlim(0, 10)
+```
+
+
+One of the most useful geoms is `geom_boxplot()`. It allows for visual comparison of the distribution of two groups.
 
 ---
 
@@ -207,6 +275,21 @@ gg_students %>%
   theme_minimal()
 ```
 
+
 ---
 
-__Does the `geom_boxplot()` transform the 
+__Comparison of distributions across categories can also be done by adding a fill aesthetic to the density plot you made earlier. Try this out. To take care of the overlap, you might want to add some transparency in the `geom_density()` function using the `alpha` argument__
+
+---
+
+```{r geomdens4}
+gg_students %>% 
+  ggplot(aes(x = grade, fill = prog)) +
+  geom_density(alpha = .5, colour = NA) +
+  geom_rug(size = 1, colour = "light seagreen") +
+  theme_minimal() +
+  labs(y = "", fill = "Programme") +
+  xlim(0, 10)
+```
+
+
