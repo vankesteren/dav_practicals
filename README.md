@@ -135,6 +135,7 @@ z^2
 z == 2
 z > 2
 install.packages("dplyr")
+library(dplyr)
 ```
 - Be able to read the help file of any function, (e.g., type `?plot` in the console)
 

@@ -1569,8 +1569,8 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 </ol>
 <hr />
 </div>
-<div id="lists" class="section level1">
-<h1>Lists</h1>
+<div id="lists-and-data-frames" class="section level1">
+<h1>Lists and data frames</h1>
 <p>A list is a collection of objects. The elements may have names, but it is not necessary. Each element of a list can have a different data type, unlike vectors.</p>
 <hr />
 <ol start="3" style="list-style-type: decimal">
@@ -1585,34 +1585,39 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 </ol>
 <hr />
 <p>Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name <code>df$columname</code> or their index <code>df[[1]]</code>. Additionally, the tenth row can be selected using <code>df[10, ]</code>, the second column using <code>df[, 2]</code> and cell number 10, 2 can be accessed using <code>df[10, 2]</code>. This is because data frames also behave like the <code>matrix</code> data type in addition to the <code>list</code> type.</p>
+<hr />
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Useful functions for determining the size of a data frame are <code>ncol()</code> and <code>nrow()</code>. Try them out!</strong></li>
+</ol>
+<hr />
 </div>
 <div id="loading-viewing-and-summarising-data" class="section level1">
 <h1>Loading, viewing, and summarising data</h1>
 <p>We are going to use a dataset from Kaggle - the Google play store apps data by user <code>lava18</code>. We have downloaded it into the data folder already from <a href="https://www.kaggle.com/lava18/google-play-store-apps" class="uri">https://www.kaggle.com/lava18/google-play-store-apps</a> (downloaded on 2018-09-28).</p>
 <p>Tidyverse contains many data loading functions – each for their own file type – in the packages <code>readr</code> (default file types), <code>readxl</code> (excel files), and <code>haven</code> (external file types such as from SPSS or Stata). The most common file type is <code>csv</code>, which is what we use here.</p>
 <hr />
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li><strong>Use the function <code>read_csv()</code> to import the file “data/googleplaystore.csv” and store it in a variable called <code>apps</code>.</strong></li>
 </ol>
 <hr />
 <p>If necessary, use the help files. These import functions from the tidyverse are fast and safe: they display informative errors if anything goes wrong. <code>read_csv()</code> also displays a message with information on how each column is imported: which variable type each column gets.</p>
 <hr />
-<ol start="6" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><strong>Did any column get a variable type you did not expect?</strong></li>
 </ol>
 <hr />
 <hr />
-<ol start="7" style="list-style-type: decimal">
+<ol start="8" style="list-style-type: decimal">
 <li><strong>Use the function <code>head()</code> to look at the first few rows of the <code>apps</code> dataset</strong></li>
 </ol>
 <hr />
 <hr />
-<ol start="8" style="list-style-type: decimal">
+<ol start="9" style="list-style-type: decimal">
 <li><strong>Repeat steps 5, 6, and 7 but now for “data/students.xlsx” (NB: You’ll need a function from the package <code>readxl</code>). Also try out the function <code>tail()</code> and <code>View()</code> (with a capital V).</strong></li>
 </ol>
 <hr />
 <hr />
-<ol start="9" style="list-style-type: decimal">
+<ol start="10" style="list-style-type: decimal">
 <li><strong>Create a summary of the three columns in the students dataset using the <code>summary()</code> function. What is the range of the grades achieved by the students?</strong></li>
 </ol>
 <hr />
@@ -1625,12 +1630,12 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <p>The first verb is <code>filter()</code>, which selects rows from a data frame. <a href="http://r4ds.had.co.nz/transform.html#comparisons">Chapter 5 of R4DS</a> states that to use filtering effectively, you have to know how to select the observations that you want using the comparison operators. R provides the standard suite: <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>!=</code> (not equal), and <code>==</code> (equal).</p>
 <p>When you’re starting out with R, the easiest mistake to make is to use <code>=</code> instead of <code>==</code> when testing for equality.</p>
 <hr />
-<ol start="10" style="list-style-type: decimal">
+<ol start="11" style="list-style-type: decimal">
 <li><strong>Look at the help pages for <code>filter()</code> (especially the examples) and show the students with a grade lower than 5.5</strong></li>
 </ol>
 <hr />
 <hr />
-<ol start="11" style="list-style-type: decimal">
+<ol start="12" style="list-style-type: decimal">
 <li><strong>Show only the students with a grade higher than 8 from programme A</strong></li>
 </ol>
 <hr />
@@ -1640,7 +1645,7 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <h3>Arrange</h3>
 <p>The second verb is <code>arrange()</code>, which sorts a data frame by one or more columns.</p>
 <hr />
-<ol start="12" style="list-style-type: decimal">
+<ol start="13" style="list-style-type: decimal">
 <li><strong>Sort the students dataset such that the students from programme A are on top of the data frame and within the programmes the highest grades come first.</strong></li>
 </ol>
 <hr />
@@ -1649,7 +1654,7 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <h3>Select</h3>
 <p>The third verb is <code>select()</code>, which selects columns of interest.</p>
 <hr />
-<ol start="13" style="list-style-type: decimal">
+<ol start="14" style="list-style-type: decimal">
 <li><strong>Show only the <code>student_number</code> and <code>programme</code> columns from the students dataset</strong></li>
 </ol>
 <hr />
@@ -1694,7 +1699,7 @@ students</code></pre>
 </tbody>
 </table>
 <hr />
-<ol start="14" style="list-style-type: decimal">
+<ol start="15" style="list-style-type: decimal">
 <li><strong>Use <code>mutate()</code> and <code>recode()</code> to change the codes in the programme column of the students dataset to their names. Store the result in a variable called <code>students_recoded</code></strong></li>
 </ol>
 <hr />
@@ -1736,13 +1741,74 @@ students_dataset</code></pre>
 ## # ... with 24 more rows</code></pre>
 <p>In one statement, we have loaded the dataset from disk, recoded the programme variable, filtered only students that pass, reordered the rows and selected the relevant columns only. We did not need to save intermediate results or nest functions deeply.</p>
 <hr />
-<p><strong>Create a data processing pipeline that loads the apps dataset, parses the number of downloads using <code>mutate</code> and <code>parse_number()</code>, shows only apps with more than 500 000 000 downloads, orders them by rating (best on top), and shows only the relevant columns (you can choose which are relevant).</strong></p>
+<ol start="16" style="list-style-type: decimal">
+<li><strong>Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of downloads using <code>mutate</code> and <code>parse_number()</code>, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the <code>Rating</code> and <code>Category</code> variables). Save the result under the name <code>popular_apps</code>.</strong></li>
+</ol>
 <hr />
-<p>If you find duplicates, you may need to use <code>distinct(App, .keep_all = TRUE)</code> as the last step in your pipeline to remove duplicate app names.</p>
+<p>If you find duplicates, you may need to use <code>distinct(App, .keep_all = TRUE)</code> as the last step in your pipeline to remove duplicate app names. Tip: <code>ctrl/cmd + shift + M</code> inserts a pipe operator in RStudio.</p>
 </div>
 <div id="grouping-and-summarisation" class="section level1">
 <h1>Grouping and summarisation</h1>
 <p>We have now seen how we can transform and clean our datasets. The next step is to start exploring the dataset by computing relevant summary statistics, such as means, ranges, variances, differences, etc. We have already used the function <code>summary()</code> which comes with <code>R</code>, but <code>dplyr</code> has extra summary functionality in the form of the <code>summarise()</code> (or <code>summarize()</code>) verb.</p>
+<p>An example to get the mean grade of the <code>students_dataset</code> we made earlier is below:</p>
+<pre class="r"><code>students_dataset %&gt;% 
+  summarise(
+    mean = mean(grade), 
+    variance = var(grade), 
+    min = min(grade), 
+    max = max(grade)
+  )</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##    mean variance   min   max
+##   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1  7.15    0.817  5.53  9.29</code></pre>
+<hr />
+<ol start="17" style="list-style-type: decimal">
+<li><strong>Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.</strong>_</li>
+</ol>
+<hr />
+<p>The <code>summarise()</code> function works with any function that takes a vector of numbers and outputs a single number. For example, we can create our own <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">Median Absolute Deviation (MAD)</a> function:</p>
+<pre class="r"><code>mad &lt;- function(x) {
+  median(abs(x - median(x)))
+}
+
+students_dataset %&gt;% summarise(mad = mad(grade))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##     mad
+##   &lt;dbl&gt;
+## 1 0.591</code></pre>
+<hr />
+<ol start="18" style="list-style-type: decimal">
+<li><strong>Add the median absolute deviation to the summaries you made before</strong></li>
+</ol>
+<hr />
+<p>By itself, the <code>summarise()</code> function is not very useful; we can also simply use the <code>summary()</code> function or directly enter the vector we are interested in as an argument to the functions: <code>mad(students_dataset$grade)</code> = 0.5908503. The power of <code>summarise()</code> is in its combined use with the <code>group_by()</code> function, which makes it easy to make grouped summaries:</p>
+<pre class="r"><code>students_dataset %&gt;% 
+  group_by(prog) %&gt;% 
+  summarise(
+    mean = mean(grade), 
+    variance = var(grade), 
+    min = min(grade), 
+    max = max(grade)
+  )</code></pre>
+<pre><code>## # A tibble: 2 x 5
+##   prog            mean variance   min   max
+##   &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Science         7.35    0.736  5.92  8.94
+## 2 Social Science  6.96    0.868  5.53  9.29</code></pre>
+<hr />
+<ol start="19" style="list-style-type: decimal">
+<li><strong>Create a grouped summary of the ratings per category in the popular apps dataset.</strong></li>
+</ol>
+<hr />
+</div>
+<div id="final-exercise" class="section level1">
+<h1>Final exercise</h1>
+<hr />
+<ol start="20" style="list-style-type: decimal">
+<li><strong>Create an interesting summary based on the Google play store apps dataset. An example could be “do games get higher ratings than communication apps?”</strong></li>
+</ol>
+<hr />
 </div>
 
 
