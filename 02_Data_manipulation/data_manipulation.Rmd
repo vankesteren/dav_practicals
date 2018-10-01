@@ -10,6 +10,7 @@ output:
     toc: true
     toc_depth: 1
     toc_float: true
+    df_print: paged
     theme: paper
     pandoc_args: --output=data_manipulation_answers.html
   pdf_document:
