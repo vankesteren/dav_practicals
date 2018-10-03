@@ -35,8 +35,8 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 04 </td>
     <td> Assignment EDA </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Assignment_Exploratory_data_analysis/assignment_eda.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Assignment_Exploratory_data_analysis/assignment_eda.pdf"> .pdf </a> </td>
   </tr>
   <tr>
     <td> 05 </td>
