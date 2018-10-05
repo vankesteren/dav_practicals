@@ -48,9 +48,9 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 06 </td>
     <td>  Supervised learning: Regression 2 </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_2/regression_2.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_2/regression_2.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_2/regression_2_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 07 </td>

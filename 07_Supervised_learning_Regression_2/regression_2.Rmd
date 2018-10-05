@@ -1,0 +1,252 @@
+---
+title: "Supervised learning: Regression 2"
+params:
+  answers: false
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    # pandoc_args: --output=regression_2_answers.html
+---
+
+# Introduction
+
+In this practical, you will learn how to handle many variables with regression by using variable selection techniques, and how to tune hyperparameters for these techniques. This practical has been derived from chapter 6 of ISLR.
+
+One of the packages we are going to use is `glmnet`. For this, you will probably need to `install.packages("glmnet")` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(ISLR)
+library(glmnet)
+library(tidyverse)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(45)
+```
+
+
+# Best subset selection
+
+Our goal for today is to use the `Hitters` dataset from the `ISLR` package to predict `Salary`.
+
+---
+
+__Prepare a dataframe `baseball` from the Hitters dataset but without the baseball players for which the `Salary` is missing. How many baseball players are left?__
+
+---
+
+```{r naomit}
+
+baseball <- Hitters %>% filter(!is.na(Salary))
+
+nrow(baseball)
+
+```
+
+
+---
+
+__Create `baseball_train` (50%), `baseball_valid` (30%), and `baseball_test` (20%) datasets.__
+
+---
+
+
+```{r split}
+
+split <- c(rep("train", 132), rep("valid", 79), rep("test",  52))
+baseball <- baseball %>% mutate(split = sample(split))
+
+baseball_train <- baseball %>% filter(split == "train")
+baseball_valid <- baseball %>% filter(split == "valid")
+baseball_test  <- baseball %>% filter(split == "test")
+
+```
+
+
+---
+
+__Create a function called `lm_mse()` with as input a formula and a training dataset and a test dataset which outputs the mse on the test dataset for predictions from a linear model.__
+
+---
+
+Start like this:
+
+```{r lmmse1, eval = FALSE}
+
+mse <- function(y_true, y_pred) sum((y_true - y_pred)^2)
+
+lm_mse <- function(formula, train_data, valid_data) {
+  y_name <- as.character(formula)[2]
+  y_true <- valid_data[[y_name]]
+  
+  # The remainder of the function here
+}
+
+```
+
+```{r lmmse2}
+
+mse <- function(y_true, y_pred) sum((y_true - y_pred)^2)
+
+lm_mse <- function(formula, train_data, valid_data) {
+  y_name <- as.character(formula)[2]
+  y_true <- valid_data[[y_name]]
+  
+  lm_fit <- lm(formula, train_data)
+  y_pred <- predict(lm_fit, newdata = valid_data)
+  
+  mse(y_true, y_pred)
+}
+
+```
+
+---
+
+__Try out your function with the formula `Salary ~ Hits + Runs`, using `baseball_train` and `baseball_valid`.__
+
+---
+
+```{r lmmse3}
+
+lm_mse(Salary ~ Hits + Runs, baseball_train, baseball_valid)
+lm_mse(Salary ~ Hits, baseball_train, baseball_valid)
+
+```
+
+We have pre-programmed a function for you to output _all_ formulas with `p` variables as characters You can load the function into your environment by _sourcing_ the `.R` file it is written in:
+
+```{r src}
+source("generate_formulas.R")
+```
+
+You can use it like so:
+
+```{r use}
+generate_formulas(p = 2, x_vars = c("x1", "x2", "x3", "x4"), y_var = "y")
+```
+
+---
+
+__Create a character vector of all predictor variables from the `Hitters` dataset. `colnames()` may be of help. Note that `Salary` is not a predictor variable__
+
+---
+
+```{r enum}
+x_vars <- colnames(Hitters)
+x_vars <- x_vars[x_vars != "Salary"]
+```
+
+
+---
+
+__Generate all formulas with as outcome `Salary` and 3 predictors from the `Hitters` data. Assign this to a variable called `formulas`. There should be $\choose{19}{3} = $ `r choose(19, 3)` elements in this vector.__
+
+---
+
+
+```{r frmls}
+
+formulas <- generate_formulas(p = 3, x_vars = x_vars, y_var = "Salary")
+length(formulas)
+
+```
+
+---
+
+__Use a `for loop` to find the best set of 3 predictors in the `Hitters` dataset based on MSE. Use the `baseball_train` and `baseball_valid` datasets.__
+
+---
+
+```{r forloop}
+
+# Initialise a vector we will fill with MSE values
+mses <- rep(0, 969)
+
+# loop over all the formulas
+for (i in 1:969) {
+  mses[i] <- lm_mse(as.formula(formulas[i]), baseball_train, baseball_valid)
+}
+
+# select the formula with the lowest MSE
+best_3_preds <- formulas[which.min(mses)]
+
+```
+
+---
+
+__Do the same for 1, 2 and 4 predictors. Now select the best model with 1, 2, 3, or 4 predictors in terms of its out-of-sample MSE__
+
+---
+
+```{r forloops, cache = TRUE, results = "hold"}
+# Generate formulas
+formulas_1 <- generate_formulas(p = 1, x_vars = x_vars, y_var = "Salary")
+formulas_2 <- generate_formulas(p = 2, x_vars = x_vars, y_var = "Salary")
+formulas_4 <- generate_formulas(p = 4, x_vars = x_vars, y_var = "Salary")
+
+# Initialise a vector we will fill with MSE values
+mses_1 <- rep(0, length(formulas_1))
+mses_2 <- rep(0, length(formulas_2))
+mses_4 <- rep(0, length(formulas_4))
+
+# loop over all the formulas
+for (i in 1:length(formulas_1)) {
+  mses_1[i] <- lm_mse(as.formula(formulas_1[i]), baseball_train, baseball_valid)
+}
+
+for (i in 1:length(formulas_2)) {
+  mses_2[i] <- lm_mse(as.formula(formulas_2[i]), baseball_train, baseball_valid)
+}
+
+for (i in 1:length(formulas_4)) {
+  mses_4[i] <- lm_mse(as.formula(formulas_4[i]), baseball_train, baseball_valid)
+}
+
+# Compare mses
+min(mses_1)
+min(mses_2)
+min(mses)
+min(mses_4)
+
+# min(mses_4) is lowest of them all!
+# So let's see which model that is
+
+formulas_4[which.min(mses_4)]
+
+```
+
+---
+
+__Calculate the test MSE for this model. Then, create a plot comparing predicted values (mapped to x position) versus observed values (mapped to y position) of `baseball_test`.__
+
+---
+
+
+```{r msefinal}
+
+# Estimate model and calculate mse
+lm_best <- lm(Salary ~ Runs + CHits + Division + PutOuts, baseball_train)
+mse(baseball_test$Salary, predict(lm_best, newdata = baseball_test))
+
+# create a plot
+tibble(
+  y_true = baseball_test$Salary,
+  y_pred = predict(lm_best, newdata = baseball_test)
+) %>% 
+  ggplot(aes(x = y_pred, y = y_true)) +
+  geom_abline(slope = 1, intercept = 0, lty = 2) +
+  geom_point() +
+  theme_minimal()
+```
