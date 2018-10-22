@@ -1,7 +1,7 @@
 ---
 title: "Data manipulation"
 params:
-  answers: false
+  answers: true
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
