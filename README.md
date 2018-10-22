@@ -55,43 +55,43 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 07 </td>
     <td> Supervised learning: Regression 3 </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
   </tr>
   <tr>
     <td> 08 </td>
     <td> Supervised learning: Classification 1 </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
   </tr>
   <tr>
     <td> 09 </td>
     <td> Supervised learning: Classification 2 </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
   </tr>
   <tr>
     <td> 10 </td>
     <td> Assignment Prediction Model </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
+    <td>  </td>
+    <td>  </td>
   </tr>
   <tr>
     <td> 11 </td>
     <td> Unsupervised learning: PCA & Correspondence Analysis </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
   </tr>
   <tr>
     <td> 12 </td>
     <td> Unsupervised learning: Clustering </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/01_R_basics_for_DAV/r_basics_answers.html"> Answers </a> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
   </tr>
 </table>
 
