@@ -22,7 +22,7 @@ output:
 Welcome to the DAV practicals. In the practicals we will get hands-on experience with the materials in the lectures by programming in `R` and completing assignments. This is the first practical. In this practical, we will briefly introduce how we are going to work with `R` and `RStudio` for the remainder of the course. This first practical is meant to get everyone up to speed on our workflow. 
 
 - Make sure you have read and comply with the [prerequisites](https://vankesteren.github.io/dav_practicals/#prerequisites).
-- Read through the [outline](https://vankesteren.github.io/dav_practicals/#outline-of-the-practicals) of the practicals. Note that in some weeks we do more than 1 practical and that assignments are due in week 3 and 10.
+- Read through the [outline](https://vankesteren.github.io/dav_practicals/#outline-of-the-practicals) of the practicals. Note that in some weeks we do more than one practical and that assignments are due in week 3 and 10.
 - You may skip the first two sections if you already know about them.
 
 Nothing needs to be handed in. You are doing these practicals to get experience with the material from the lectures and to practice for the assignments (which do need to be handed in).
@@ -48,7 +48,7 @@ RStudio is the de-facto standard integrated development environment (IDE) for `R
 
 ![One of the possible RStudio configurations - the Fira Code font with the Idle Fingers theme](images/rstudio.png)
 
-Rstudio has four main panes. In the top-left, there is the source pane. Here, any open document or `R` script can be viewed and edited, just like any regular text editor. This is where we will do most of our programming. On the bottom left, we have our actual `R` session, the console. Typing `R` commands in this window will actually perform them. Pressing "run" in the source pane (or ctrl/cmd + enter) will send any commands currently selected in the source pane to the console to be executed.
+Rstudio has four main panes. In the top-left, there is the source pane. Here, any open document or `R` script can be viewed and edited, just like any regular text editor. This is where we will do most of our programming. On the bottom left, we have our actual `R` session, the console. Typing `R` commands in this window will actually perform them. Pressing "run" in the source pane (or ctrl + enter) will send any commands currently selected in the source pane to the console to be executed.
 
 The top-right pane holds the environment. Any objects and variables created by running code will appear here for closer inspection.
 
@@ -220,12 +220,12 @@ Throughout this course, try to maintain a consistent and legible style for your 
 
 ---
 
-The most obvious deviation we will make from the google style guide is in naming things: `object_name` for variables and `do_something()` for functions are how we will be programming. Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
+The most obvious deviation we will make from the google style guide is in naming things: `object_name` for variables and `Do_Something()` for functions are how we will be programming. Commenting is another important note from google style in your code. Entire commented lines should begin with # and one space. Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
 
 
 # Conclusion
 
-If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02_Data_manipulation.Rproj` from its folder and crea
+If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02_Data_manipulation.Rproj` from its folder before running any code!
 
 
 

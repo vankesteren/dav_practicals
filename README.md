@@ -111,6 +111,7 @@ Some good sources are:
 - Interactive R course: install `R` as in the previous point and in the console type the following lines one by one
 ```r
 install.packages("swirl")
+library(swirl)
 swirl()
 ```
 and follow the guide to run the `R Programming: The basics of programming in R` interactive course.
