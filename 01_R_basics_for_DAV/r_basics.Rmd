@@ -225,7 +225,7 @@ The most obvious deviation we will make from the google style guide is in naming
 
 # Conclusion
 
-If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02_Data_manipulation.Rproj` from its folder and create a data processing pipeline!
+If you have followed this practical, you are all set for the remainder of this course! For the next practical (also in this week!), open the file `02_Data_manipulation.Rproj` from its folder before running any code!
 
 
 
