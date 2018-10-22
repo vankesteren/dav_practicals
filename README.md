@@ -35,15 +35,15 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 04 </td>
     <td> Assignment EDA </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Assignment_Exploratory_data_analysis/assignment_eda.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Assignment_Exploratory_data_analysis/assignment_eda.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/04_Assignment_Exploratory_data_analysis/assignment_eda.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/04_Assignment_Exploratory_data_analysis/assignment_eda.pdf"> .pdf </a> </td>
   </tr>
   <tr>
     <td> 05 </td>
     <td> Supervised learning: Regression 1 </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_1/regression_1.html"> .html </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_1/regression_1.pdf"> .pdf </a> </td>
-    <td> <a href="https://vankesteren.github.io/dav_practicals/06_Supervised_learning_Regression_1/regression_1_answers.html"> Answers </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Supervised_learning_Regression_1/regression_1.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Supervised_learning_Regression_1/regression_1.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/05_Supervised_learning_Regression_1/regression_1_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 06 </td>
@@ -141,7 +141,7 @@ library(dplyr)
 - Be able to read the help file of any function, (e.g., type `?plot` in the console)
 
 ## Outline of the practicals
-Anything written in _italic font_ is optional/extra material.
+Anything written in _italic font_ is optional/extra material. You can look those up by yourself if you have extra time.
 
 ### Week 1
 
