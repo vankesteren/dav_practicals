@@ -63,7 +63,7 @@ object_6 <- as.factor(rep(object_5, 2))
 object_7 <- c(1, 2, 3, "4", "5", "6")
 ```
 
-the factor data type is special to `R` and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in `object_6`.
+The factor data type is special to `R` and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in `object_6`.
 
 Vectors can have only a single data type. Note that the first three elements in `object_7` have been converted. We can convert to different data types using the `as.<class>()` functions. 
 
@@ -107,7 +107,7 @@ dat <- data.frame(Var1 = object_1, Var2 = object_2, Var3 = object_5)
 dat
 ```
 
-Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name `df$columname` or their index `df[[1]]`. Additionally, the tenth row can be selected using `df[10, ]`, the second column using `df[, 2]` and cell number 10, 2 can be accessed using `df[10, 2]`. This is because data frames also behave like the `matrix` data type in addition to the `list` type.
+Just like a list, the columns in a data frame (the variables in a dataset) can be accessed using their name `df$columnname` or their index `df[[1]]`. Additionally, the tenth row can be selected using `df[10, ]`, the second column using `df[, 2]` and cell number 10, 2 can be accessed using `df[10, 2]`. This is because data frames also behave like the `matrix` data type in addition to the `list` type.
 
 ---
 
@@ -304,7 +304,7 @@ In one statement, we have loaded the dataset from disk, recoded the programme va
 
 ---
 
-16. __Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of downloads using `mutate` and `parse_number()`, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the `Rating` and `Category` variables). Save the result under the name `popular_apps`.__
+16. __Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of installs as 'Downloads' variable using `mutate` and `parse_number()`, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the `Rating` and `Category` variables). Save the result under the name `popular_apps`.__
 
 ---
 
@@ -340,7 +340,7 @@ students_dataset %>%
 
 ---
 
-17. __Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.___
+17. __Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.__
 
 ---
 
@@ -349,7 +349,7 @@ popular_apps %>%
   summarise(
     med = median(Rating),
     min = min(Rating), 
-    max = max(Rating),
+    max = max(Rating)
   )
 ```
 
@@ -398,6 +398,17 @@ students_dataset %>%
 19. __Create a grouped summary of the ratings per category in the popular apps dataset.__
 
 ---
+
+```{r group2, include = params$answers}
+popular_apps %>%
+  group_by(Category) %>% 
+  summarise(
+    med = median(Rating),
+    min = min(Rating), 
+    max = max(Rating),
+    mad = mad(Rating)
+  )
+```
 
 # Final exercise
 
