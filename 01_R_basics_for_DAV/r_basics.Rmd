@@ -6,15 +6,15 @@ mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
   html_document:
     toc: true
     toc_depth: 1
     toc_float: true
     theme: paper
-  pdf_document:
-    toc: true
-    toc_depth: 1
-    latex_engine: xelatex
 ---
 
 # Introduction
