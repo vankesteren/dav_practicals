@@ -304,7 +304,7 @@ In one statement, we have loaded the dataset from disk, recoded the programme va
 
 ---
 
-16. __Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of downloads using `mutate` and `parse_number()`, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the `Rating` and `Category` variables). Save the result under the name `popular_apps`.__
+16. __Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of installs as 'Downloads' variable using `mutate` and `parse_number()`, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the `Rating` and `Category` variables). Save the result under the name `popular_apps`.__
 
 ---
 
@@ -340,7 +340,7 @@ students_dataset %>%
 
 ---
 
-17. __Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.___
+17. __Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.__
 
 ---
 
@@ -349,7 +349,7 @@ popular_apps %>%
   summarise(
     med = median(Rating),
     min = min(Rating), 
-    max = max(Rating),
+    max = max(Rating)
   )
 ```
 
@@ -398,6 +398,17 @@ students_dataset %>%
 19. __Create a grouped summary of the ratings per category in the popular apps dataset.__
 
 ---
+
+```{r group2, include = params$answers}
+popular_apps %>%
+  group_by(Category) %>% 
+  summarise(
+    med = median(Rating),
+    min = min(Rating), 
+    max = max(Rating),
+    mad = mad(Rating)
+  )
+```
 
 # Final exercise
 
