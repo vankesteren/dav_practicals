@@ -1,5 +1,5 @@
 ---
-title: "Data manipulation & EDA"
+title: "Data manipulation"
 params:
   answers: true
 mainfont: Arial
