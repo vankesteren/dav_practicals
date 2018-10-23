@@ -1,5 +1,5 @@
 ---
-title: "Data manipulation"
+title: "Data manipulation & EDA"
 params:
   answers: true
 mainfont: Arial
@@ -63,7 +63,7 @@ object_6 <- as.factor(rep(object_5, 2))
 object_7 <- c(1, 2, 3, "4", "5", "6")
 ```
 
-the factor data type is special to `R` and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in `object_6`.
+The factor data type is special to `R` and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in `object_6`.
 
 Vectors can have only a single data type. Note that the first three elements in `object_7` have been converted. We can convert to different data types using the `as.<class>()` functions. 
 
@@ -107,7 +107,7 @@ dat <- data.frame(Var1 = object_1, Var2 = object_2, Var3 = object_5)
 dat
 ```
 
-Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name `df$columname` or their index `df[[1]]`. Additionally, the tenth row can be selected using `df[10, ]`, the second column using `df[, 2]` and cell number 10, 2 can be accessed using `df[10, 2]`. This is because data frames also behave like the `matrix` data type in addition to the `list` type.
+Just like a list, the columns in a data frame (the variables in a dataset) can be accessed using their name `df$columnname` or their index `df[[1]]`. Additionally, the tenth row can be selected using `df[10, ]`, the second column using `df[, 2]` and cell number 10, 2 can be accessed using `df[10, 2]`. This is because data frames also behave like the `matrix` data type in addition to the `list` type.
 
 ---
 
