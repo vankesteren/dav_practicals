@@ -2972,8 +2972,17 @@ library(tidyverse)</code></pre>
 <li><strong>Create a function that performs k-fold cross-validation for linear models.</strong></li>
 </ol>
 <hr />
-<p>Inputs: - <code>formula</code>: a formula just as in the <code>lm()</code> function - <code>dataset</code>: a data frame - <code>k</code>: the number of folds for cross validation - any other arguments you need necessary</p>
-<p>Outputs: - Mean square error averaged over folds</p>
+<p>Inputs:</p>
+<ul>
+<li><code>formula</code>: a formula just as in the <code>lm()</code> function</li>
+<li><code>dataset</code>: a data frame</li>
+<li><code>k</code>: the number of folds for cross validation</li>
+<li>any other arguments you need necessary</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li>Mean square error averaged over folds</li>
+</ul>
 <hr />
 <ol start="29" style="list-style-type: decimal">
 <li><strong>Use your function to perform 9-fold cross validation with a linear model with as its formula <code>medv ~ lstat + age + tax</code>. Compare it to a model with as formulat <code>medv ~ lstat + I(lstat^2) + age + tax</code>.</strong></li>
