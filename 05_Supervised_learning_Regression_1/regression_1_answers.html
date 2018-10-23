@@ -3065,18 +3065,18 @@ summary(model_1)</code></pre>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -10.262  -4.084  -1.611   1.937  23.494 
+## -15.687  -4.575  -1.712   2.360  19.638 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 35.49041    0.82308   43.12   &lt;2e-16 ***
-## lstat       -1.01172    0.05645  -17.92   &lt;2e-16 ***
+## (Intercept) 35.50988    0.84216   42.16   &lt;2e-16 ***
+## lstat       -1.00543    0.06011  -16.73   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 6.354 on 251 degrees of freedom
-## Multiple R-squared:  0.5613, Adjusted R-squared:  0.5596 
-## F-statistic: 321.2 on 1 and 251 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 6.548 on 251 degrees of freedom
+## Multiple R-squared:  0.5271, Adjusted R-squared:  0.5253 
+## F-statistic: 279.8 on 1 and 251 DF,  p-value: &lt; 2.2e-16</code></pre>
 <hr />
 <ol start="23" style="list-style-type: decimal">
 <li><strong>Calculate the MSE with this object. Save this value as <code>model_1_mse_train</code>.</strong></li>
@@ -3122,7 +3122,7 @@ model_2_mse_valid &lt;- mse(y_true = boston_valid$medv,
 # using this model is:
 
 sqrt(model_2_mse_test)</code></pre>
-<pre><code>## [1] 5.253594</code></pre>
+<pre><code>## [1] 6.080353</code></pre>
 </div>
 <div id="programming-exercise-cross-validation" class="section level1">
 <h1>Programming exercise: cross-validation</h1>
@@ -3140,8 +3140,17 @@ sqrt(model_2_mse_test)</code></pre>
 <li><strong>Create a function that performs k-fold cross-validation for linear models.</strong></li>
 </ol>
 <hr />
-<p>Inputs: - <code>formula</code>: a formula just as in the <code>lm()</code> function - <code>dataset</code>: a data frame - <code>k</code>: the number of folds for cross validation - any other arguments you need necessary</p>
-<p>Outputs: - Mean square error averaged over folds</p>
+<p>Inputs:</p>
+<ul>
+<li><code>formula</code>: a formula just as in the <code>lm()</code> function</li>
+<li><code>dataset</code>: a data frame</li>
+<li><code>k</code>: the number of folds for cross validation</li>
+<li>any other arguments you need necessary</li>
+</ul>
+<p>Outputs:</p>
+<ul>
+<li>Mean square error averaged over folds</li>
+</ul>
 <pre class="r"><code># Just for reference, here is the mse() function once more
 mse &lt;- function(y_true, y_pred) mean((y_true - y_pred)^2)
 
@@ -3162,7 +3171,6 @@ cv_lm &lt;- function(formula, dataset, k) {
   
   # start the for loop
   for (i in 1:k) {
-    
     # split the data in train and validation set
     data_train &lt;- data_split %&gt;% filter(folds != i)
     data_valid &lt;- data_split %&gt;% filter(folds == i)
@@ -3174,7 +3182,7 @@ cv_lm &lt;- function(formula, dataset, k) {
     y_column_name &lt;- as.character(formula)[2]
     
     # calculate the mean square error and assign it to mses
-    mses[i] &lt;- mse(y_true = data_valid %&gt;% select(y_column_name),
+    mses[i] &lt;- mse(y_true = data_valid[[y_column_name]],
                    y_pred = predict(model_i, newdata = data_valid))
   }
   
@@ -3188,61 +3196,9 @@ cv_lm &lt;- function(formula, dataset, k) {
 </ol>
 <hr />
 <pre class="r"><code>cv_lm(formula = medv ~ lstat + age + tax, dataset = Boston, k = 9)</code></pre>
-<pre><code>## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA</code></pre>
-<pre><code>## [1] NA</code></pre>
+<pre><code>## [1] 37.86147</code></pre>
 <pre class="r"><code>cv_lm(formula = medv ~ lstat + I(lstat^2) + age + tax, dataset = Boston, k = 9)</code></pre>
-<pre><code>## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA
-
-## Warning in mean.default((y_true - y_pred)^2): argument is not numeric or
-## logical: returning NA</code></pre>
-<pre><code>## [1] NA</code></pre>
+<pre><code>## [1] 28.05888</code></pre>
 </div>
 
 

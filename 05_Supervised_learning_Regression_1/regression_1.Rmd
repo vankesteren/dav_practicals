@@ -513,12 +513,14 @@ You may also just read the answer and try to understand what happens in each ste
 ---
 
 Inputs: 
+
 - `formula`: a formula just as in the `lm()` function
 - `dataset`: a data frame
 - `k`: the number of folds for cross validation
 - any other arguments you need necessary
 
 Outputs:
+
 - Mean square error averaged over folds
 
 
@@ -543,7 +545,6 @@ cv_lm <- function(formula, dataset, k) {
   
   # start the for loop
   for (i in 1:k) {
-    
     # split the data in train and validation set
     data_train <- data_split %>% filter(folds != i)
     data_valid <- data_split %>% filter(folds == i)
@@ -555,7 +556,7 @@ cv_lm <- function(formula, dataset, k) {
     y_column_name <- as.character(formula)[2]
     
     # calculate the mean square error and assign it to mses
-    mses[i] <- mse(y_true = data_valid %>% select(y_column_name),
+    mses[i] <- mse(y_true = data_valid[[y_column_name]],
                    y_pred = predict(model_i, newdata = data_valid))
   }
   
