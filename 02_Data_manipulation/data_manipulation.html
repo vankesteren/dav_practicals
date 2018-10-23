@@ -2832,7 +2832,7 @@ object_4 &lt;- as.numeric(object_2)
 object_5 &lt;- letters[object_1]
 object_6 &lt;- as.factor(rep(object_5, 2))
 object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></pre>
-<p>the factor data type is special to <code>R</code> and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in <code>object_6</code>.</p>
+<p>The factor data type is special to <code>R</code> and uncommon in other programming languages. It is used to represent categorical variables with fixed possible values. For example, when there is a multiple choice question with 5 possible choices (a to e) and 10 students answer the question, we may get a result as in <code>object_6</code>.</p>
 <p>Vectors can have only a single data type. Note that the first three elements in <code>object_7</code> have been converted. We can convert to different data types using the <code>as.&lt;class&gt;()</code> functions.</p>
 <hr />
 <ol start="2" style="list-style-type: decimal">
@@ -2855,7 +2855,7 @@ object_7 &lt;- c(1, 2, 3, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;)</code></p
 <li><strong>Make a data frame out of <code>object_1</code>, <code>object_2</code>, and <code>object_5</code> using the <code>data.frame()</code> function</strong></li>
 </ol>
 <hr />
-<p>Just like a list, te columns in a data frame (the variables in a dataset) can be accessed using their name <code>df$columname</code> or their index <code>df[[1]]</code>. Additionally, the tenth row can be selected using <code>df[10, ]</code>, the second column using <code>df[, 2]</code> and cell number 10, 2 can be accessed using <code>df[10, 2]</code>. This is because data frames also behave like the <code>matrix</code> data type in addition to the <code>list</code> type.</p>
+<p>Just like a list, the columns in a data frame (the variables in a dataset) can be accessed using their name <code>df$columnname</code> or their index <code>df[[1]]</code>. Additionally, the tenth row can be selected using <code>df[10, ]</code>, the second column using <code>df[, 2]</code> and cell number 10, 2 can be accessed using <code>df[10, 2]</code>. This is because data frames also behave like the <code>matrix</code> data type in addition to the <code>list</code> type.</p>
 <hr />
 <ol start="5" style="list-style-type: decimal">
 <li><strong>Useful functions for determining the size of a data frame are <code>ncol()</code> and <code>nrow()</code>. Try them out!</strong></li>
@@ -2995,7 +2995,7 @@ students_dataset</code></pre>
 <p>In one statement, we have loaded the dataset from disk, recoded the programme variable, filtered only students that pass, reordered the rows and selected the relevant columns only. We did not need to save intermediate results or nest functions deeply.</p>
 <hr />
 <ol start="16" style="list-style-type: decimal">
-<li><strong>Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of downloads using <code>mutate</code> and <code>parse_number()</code>, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the <code>Rating</code> and <code>Category</code> variables). Save the result under the name <code>popular_apps</code>.</strong></li>
+<li><strong>Create a data processing pipeline that (a) loads the apps dataset, (b) parses the number of installs as ‘Downloads’ variable using <code>mutate</code> and <code>parse_number()</code>, (c) shows only apps with more than 500 000 000 downloads, (d) orders them by rating (best on top), and (e) shows only the relevant columns (you can choose which are relevant, but select at least the <code>Rating</code> and <code>Category</code> variables). Save the result under the name <code>popular_apps</code>.</strong></li>
 </ol>
 <hr />
 <p>If you find duplicates, you may need to use <code>distinct(App, .keep_all = TRUE)</code> as the last step in your pipeline to remove duplicate app names. Tip: <code>ctrl/cmd + shift + M</code> inserts a pipe operator in RStudio.</p>
@@ -3018,7 +3018,7 @@ students_dataset</code></pre>
 </div>
 <hr />
 <ol start="17" style="list-style-type: decimal">
-<li><strong>Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.</strong>_</li>
+<li><strong>Show the median, minimum, and maximum for the popular apps dataset you made in the previous assignment.</strong></li>
 </ol>
 <hr />
 <p>The <code>summarise()</code> function works with any function that takes a vector of numbers and outputs a single number. For example, we can create our own <a href="https://en.wikipedia.org/wiki/Median_absolute_deviation">Median Absolute Deviation (MAD)</a> function:</p>
