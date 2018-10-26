@@ -1,7 +1,7 @@
 # Data Analysis and Visualisation practicals
 Here you can find all information and files for the practicals of the elective master's course _Data Analysis and Visualisation_ at Utrecht University (course code `201600038` in Osiris).
 
-You are going to be working inside the practicals folder. [Download the folder](https://github.com/vankesteren/dav_practicals/zipball/master) and unzip it to a smart location on your computer. 
+You are going to be working inside the practicals folder. [Download the folder](https://github.com/vankesteren/dav_practicals/zipball/master) and unzip it to a smart location on your computer.
 
 ## Links to practicals
 <table>
@@ -57,7 +57,7 @@ You are going to be working inside the practicals folder. [Download the folder](
     <td> Supervised learning: Regression 3 </td>
     <td> </td>
     <td> </td>
-    <td> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/07_Supervised_learning_Regression_3/regression_3_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 08 </td>

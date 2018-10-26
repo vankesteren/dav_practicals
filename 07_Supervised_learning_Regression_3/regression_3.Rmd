@@ -1,0 +1,223 @@
+---
+title: "Supervised learning: Regression 3"
+params:
+  answers: true
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    pandoc_args: --output=regression_3_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+In this practical, we will learn about nonlinear extensions to regression using basis functions and how to create, visualise, and interpret them. Parts of it are adapted from the practicals in ISLR chapter 7.
+
+One of the packages we are going to use is `splines`. For this, you will probably need to `install.packages("splines")` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(ISLR)
+library(tidyverse)
+library(MASS)
+library(splines)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(45)
+```
+
+
+# Prediction plot
+Median housing prices in Boston do not have a linear relation with the proportion of low SES households. Today we are going to focus exclusively on _prediction_.
+
+```{r houseprice}
+Boston %>% 
+  ggplot(aes(x = lstat, y = medv)) +
+  geom_point() +
+  theme_minimal()
+```
+
+First, we need a way of visualising the predictions.
+
+---
+
+__Create a function called `pred_plot()` that takes as input an `lm` object, which outputs the above plot but with a prediction line generated from the model object using the `predict()` method.__
+
+---
+
+```{r pred_plot}
+pred_plot <- function(model) {
+  # First create predictions for all values of lstat
+  x_pred <- seq(min(Boston$lstat), max(Boston$lstat), length.out = 500)
+  y_pred <- predict(model, newdata = tibble(lstat = x_pred))
+  
+  # Then create a ggplot object with a line based on those predictions
+  Boston %>%
+    ggplot(aes(x = lstat, y = medv)) +
+    geom_point() +
+    geom_line(data = tibble(lstat = x_pred, medv = y_pred), size = 1, col = "blue") +
+    theme_minimal()
+}
+```
+
+---
+
+__Create a linear regression object called `lin_mod` which models `medv` as a function of `lstat`. Check if your prediction plot works by running `pred_plot(lin_mod)`. Do you see anything out of the ordinary with the predictions?__
+
+---
+
+```{r lin_mod}
+lin_mod <- lm(medv ~ lstat, data = Boston)
+pred_plot(lin_mod)
+
+# the predicted median housing value is below 0 for high values.
+```
+
+# Polynomial regression
+
+The first extension to linear regression is polynomial regression, with basis functions $b_j(x_i) = x_i^j$ ([ISLR, p. 270](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf#page=284&zoom=auto,-352,436)). 
+
+---
+
+__Create another linear model `pn3_mod`, where you add the second and third-degree polynomial terms `I(lstat^2)` and `I(lstat^3)` to the formula. Create a `pred_plot()` with this model.__
+
+---
+
+```{r pn3_mod}
+
+pn3_mod <- lm(medv ~ lstat + I(lstat^2) + I(lstat^3), data = Boston)
+pred_plot(pn3_mod)
+
+```
+
+The function `poly()` can automatically generate a matrix which contains columns with polynomial basis function outputs.
+
+---
+
+__Play around with the poly() function. What output does it generate with the arguments `degree = 3` and `raw = TRUE`?__
+
+---
+
+```{r poly}
+
+poly(1:5, degree = 3, raw = TRUE)
+# these are the original column (1:5), then squared, and then cubed.
+
+```
+
+---
+
+__Use the poly() function directly in the model formula to create a 3rd-degree polynomial regression predicting `medv` using `lstat`. Compare the prediction plot to the previous prediction plot you made.__
+
+---
+
+```{r p3}
+pn3_mod2 <- lm(medv ~ poly(lstat, 3), data = Boston)
+pred_plot(pn3_mod2)
+
+# The plot is exactly the same
+```
+
+# Piecewise regression
+
+Another basis function we can use is a step function. For example, we can split the `lstat` variable into two based on its median and take the average of these groups to predict `medv`.
+
+---
+
+__Create a model called `pw2_mod` with one predictor: `I(lstat <= median(lstat))`. Create a pred_plot with this model. Use the coefficients in `coef(med_mod)` to find out what the predicted value for a low-lstat neighbourhood is.__
+
+---
+
+
+```{r pw2}
+
+pw2_mod <- lm(medv ~ I(lstat <= median(lstat)), data = Boston)
+pred_plot(pw2_mod)
+coef(pw2_mod)
+# the predicted value for low-lstat neighbourhoods is 16.68 + 11.71 = 28.39
+
+```
+
+---
+
+__Use the `cut()` function in the formula to generate a piecewise regression model called `pw5_mod` that contains 5 equally spaced sections. Again, plot the result using `pred_plot`.__
+
+---
+
+```{r pw5}
+
+pw5_mod <- lm(medv ~ cut(lstat, 5), data = Boston)
+pred_plot(pw5_mod)
+
+```
+
+
+
+# Piecewise polynomial regression
+
+Combining piecewise regression with polynomial regression, we can come up with a set of basis functions that 
+
+```{r pwreg}
+piecewise_cubic_basis <- function(vec, breaks = 2) {
+  if (breaks == 1) return(poly(vec, degree = 3, raw = TRUE))
+  
+  cut_vec <- cut(vec, breaks = breaks)
+  
+  out <- matrix(nrow = length(vec), ncol = 0)
+  
+  for (i in 1:breaks) {
+    tmp <- vec
+    tmp[cut_vec != levels(cut_vec)[i]] <- 0
+    out <- cbind(out, poly(tmp, degree = 3, raw = TRUE))
+  }
+  
+  out
+}
+
+cs_man <- lm(medv ~ piecewise_cubic_basis(lstat, 3), data = Boston)
+pred_plot(cs_man)
+```
+
+
+
+# Splines
+
+```{r bs}
+lr_mod <- lm(medv ~ lstat,                   data = Boston)
+pw_mod <- lm(medv ~ cut(lstat, breaks = 3),  data = Boston)
+pn_mod <- lm(medv ~ poly(lstat, degree = 3), data = Boston)
+cs_mod <- lm(medv ~ bs(lstat, df = 5),       data = Boston)
+ns_mod <- lm(medv ~ ns(lstat, df = 3),       data = Boston)
+```
+
+
+```{r predplots, echo = FALSE}
+
+pred_plot(lr_mod) + ggtitle("Linear regression")
+pred_plot(pw_mod) + ggtitle("Piecewise constant")
+pred_plot(pn_mod) + ggtitle("3rd-order polynomial")
+pred_plot(cs_mod) + ggtitle("Cubic spline with 2 knots")
+pred_plot(ns_mod) + ggtitle("Natural spline with 3 df")
+
+```
+
+
+# Programming assignment
+
+---
+
+__Use 12-fold cross validation to determine which of the models we've made has the lowest out-of-sample MSE.__
+
+---
+
+
