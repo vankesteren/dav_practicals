@@ -1,0 +1,32 @@
+---
+title: "Assignment Exploratory Data Analysis"
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    theme: paper
+  pdf_document:
+    latex_engine: xelatex
+---
+
+Pass / Fail assignment
+
+### Find a dataset and create and assess a prediction model. 
+You can use data from anywhere. For example, you may use [Google dataset search](https://toolbox.google.com/datasetsearch), [Kaggle datasets](https://www.kaggle.com/datasets), a dataset from an `R` package, or something you collected yourself.
+
+### Requirements
+- explain the dataset in 1 or 2 paragraphs
+- use `tidyverse`
+- clean, legible `R` code (preferably following something close to the google style guide)
+- explain which method you use (regression/classification and what exactly)
+- assess your predictions 
+- interpret the parameters of your method, if applicable
+- make conclusions about your predictions
+- use plots where useful (they are almost always useful)
+
+### Format: stand-alone RStudio project folder
+- Should have these components:
+  - the dataset (csv, xlsx, sav, dat, json, or any other common format)
+  - one .Rmd notebook file
+  - a compiled .pdf or .html
