@@ -1,0 +1,112 @@
+---
+title: "Supervised learning: Classification 2"
+params:
+  answers: false
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    #pandoc_args: --output=classification_2_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+In this practical, we will dive deeper into assessing classification methods, and we will use an interpretable classification tree to classify Irises according to their physical properties. 
+
+We will use the packages `rpart` and `rpart.plot`. For this, you will probably need to `install.packages("rpart")` and `install.packages("rpart.plot")` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(MASS)
+library(rpart)
+library(rpart.plot)
+library(ISLR)
+library(tidyverse)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(45)
+```
+
+# Iris dataset
+
+The dataset we are going to use today is a dataset from [R.A. Fisher's 1936 paper on linear discriminant analysis](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02137.x): the `iris` dataset. Fisher's goal was to classify the three subspecies of iris according to the attributes of the plants: `Sepal.Length`, `Sepal.Width`, `Petal.Length`, and `Petal.Width`:
+
+![source: [kaggle](http://blog.kaggle.com/2015/04/22/scikit-learn-video-3-machine-learning-first-steps-with-the-iris-dataset/)](images/iris_petal_sepal.png)
+
+Fisher was successful in his venture, and he published a paper in his own journal "annals of eugenics" (which was quite common in those days). The paper includes a hand-drawn graph worth looking at:
+
+![](images/fisher_lda.png)
+
+We can almost completely reproduce this graph using the first discriminant function `lda()` function
+
+
+```{r iris}
+
+lda_iris <- lda(Species ~ ., data = iris)
+first_ld <- -as.numeric(as.matrix(iris[, -5]) %*% lda_iris$scaling[,1])
+
+tibble(
+  ld = first_ld,
+  Species = iris$Species
+) %>% 
+  ggplot(aes(x = ld, fill = Species)) +
+  geom_histogram(binwidth = .5, position = "identity", alpha = .9) +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  labs(
+    x = "Discriminant function",
+    y = "Frequency", 
+    main = "Fisher's linear discriminant function on Iris species"
+  )
+
+
+```
+
+---
+
+__Explore the iris dataset using summaries and plots.__
+
+---
+
+```{r eda}
+
+summary(iris)
+
+# Some example plots you could make
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) + 
+  geom_point() +
+  scale_colour_viridis_d() +
+  theme_minimal() +
+  ggtitle("Lengths")
+
+iris %>% 
+  ggplot(aes(x = Sepal.Width, y = Petal.Width, colour = Species)) + 
+  geom_point() +
+  scale_colour_viridis_d() +
+  theme_minimal() +
+  ggtitle("Widths")
+
+# The plots indicate quite strong separation between the classes
+
+```
+
+
+# Classification trees
+
+```{r rpart}
+
+iris_tree <- rpart(Species ~ ., data = iris)
+rpart.plot(iris_tree)
+
+```
