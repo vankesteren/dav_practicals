@@ -20,7 +20,7 @@ output:
 ---
 
 # Introduction
-In this practical, we will learn about nonlinear extensions to regression using basis functions and how to create, visualise, and interpret them. Parts of it are adapted from the practicals in ISLR chapter 7.
+In this practical, we will learn about three different classification methods: K-nearest neighbours, logistic regression, and linear discriminant analysis.
 
 One of the packages we are going to use is `class`. For this, you will probably need to `install.packages("class")` before running the `library()` functions.
 
