@@ -76,8 +76,8 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 10 </td>
     <td> Assignment Prediction Model </td>
-    <td>  </td>
-    <td>  </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/10_Assignment_Prediction_model/assignment_prediction.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/10_Assignment_Prediction_model/assignment_prediction.pdf"> .pdf </a> </td>
   </tr>
   <tr>
     <td> 11 </td>
