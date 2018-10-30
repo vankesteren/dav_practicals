@@ -1,13 +1,13 @@
 ---
-title: "Assignment Exploratory Data Analysis"
+title: "Assignment Prediction Model"
 mainfont: Arial
-fontsize: 12pt
-urlcolor: blue
-output: 
+output:
   html_document:
     theme: paper
   pdf_document:
     latex_engine: xelatex
+fontsize: 12pt
+urlcolor: blue
 ---
 
 Pass / Fail assignment
