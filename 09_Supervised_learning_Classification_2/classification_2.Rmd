@@ -20,16 +20,20 @@ output:
 ---
 
 # Introduction
-In this practical, we will dive deeper into assessing classification methods, and we will use an interpretable classification tree to classify Irises according to their physical properties. 
+In this practical, we will dive deeper into assessing classification methods and we will perform classification using tree-based methods.
 
-We will use the packages `rpart` and `rpart.plot`. For this, you will probably need to `install.packages("rpart")` and `install.packages("rpart.plot")` before running the `library()` functions.
+We will use the packages `rpart`, `rpart.plot`, and `randomForest`. For this, you will probably need to `install.packages()` before running the `library()` functions.
 
 ```{r packages, warning = FALSE, message = FALSE}
 library(MASS)
-library(rpart)
-library(rpart.plot)
 library(ISLR)
 library(tidyverse)
+
+library(rpart)
+library(rpart.plot)
+library(randomForest)
+
+library(hmeasure)
 ```
 
 
@@ -37,9 +41,179 @@ library(tidyverse)
 set.seed(45)
 ```
 
+# Confusion matrix, continued
+
+In the `data/` folder there is a cardiovascular disease dataset of 253 patients. The goal is to predict whether a patient will respond to treatment based on variables in this dataset:
+
+- severity of the disease (low/high)
+- age of the patient
+- gender of the patient
+- bad behaviour score (e.g. smoking/drinking)
+- prior occurrence of the cardiovascular disease
+- dose of the treatment administered: 1 (lowest), 2 (medium), or 3 (highest)
+
+
+
+---
+
+__Create a logistic regression model `lr_mod` for this data using the formula `response ~ .^2` and create a confusion matrix based on a .5 cutoff probability.__
+
+---
+
+```{r lr_treatment, message = FALSE}
+
+treat <- read_csv("data/cardiovascular_treatment.csv") %>% 
+  mutate(severity = as.factor(severity),
+         gender   = as.factor(gender),
+         dose     = as.factor(dose),
+         response = as.factor(response))
+
+# I created a model with all first-order interactions
+lr_mod <- glm(response ~ ., "binomial", treat)
+
+
+prob_lr <- predict(lr_mod, type = "response")
+pred_lr <- ifelse(prob_lr > .5, 1, 0)
+
+table(true = treat$response, pred = pred_lr)
+
+```
+
+---
+
+__Calculate the accuracy, true positive rate (sensitivity), the true negative rate (specificity), the false positive rate, the positive predictive value, and the negative predictive value. You can use the [confusion matrix table on wikipedia](https://en.wikipedia.org/w/index.php?title=Sensitivity_and_specificity&oldid=862159646#Confusion_matrix). What can you say about the model performance? Which metrics are most relevant if this model were to be used in the real world?__
+
+---
+
+```{r calc}
+
+cmat_lr <- table(true = treat$response, pred = pred_lr)
+
+TN <- cmat_lr[1, 1]
+FN <- cmat_lr[2, 1]
+FP <- cmat_lr[1, 2]
+TP <- cmat_lr[2, 2]
+
+tibble(
+  Acc = (TP + TN) / sum(cmat_lr),
+  TPR = TP / (TP + FN),
+  TNR = TN / (TN + FP),
+  FPR = FP / (TN + FP),
+  PPV = TP / (TP + FP),
+  NPV = TN / (TN + FN)
+)
+
+# Accuracy is .7, meaning that 30% of the patients are misclassified
+
+# [TPR] If the patient will respond to treatment, there is an 77% probability 
+# that the model will detect this
+
+# [TNR] If the patient will not respond to treatment, there is a 63% prob
+# that the model will detect this
+
+# [FPR] If the patient does not respond to treatment, there is a 37% chance
+# he or she will anyway be predicted to respond to the treatment
+
+# [PPV] If the patient is predicted to respond to the treatment, there is a
+# 67% chance they will actually respond to the treatment
+
+# [NPV] If the patient is predicted to not respond to the treatment, there is
+# a 73% probability that they will indeed not respond to the treatment
+
+# The last two metrics are very relevant: if a new patient comes in you will
+# only know the prediction and not the true value
+```
+
+---
+
+__Create an LDA model `lda_mod` for the same prediction problem. Compare its performance to the LR model.__
+
+---
+
+```{r lda}
+
+lda_mod <- lda(response ~ ., treat)
+
+
+pred_lda <- predict(lda_mod)$class
+
+cmat_lda <- table(true = treat$response, pred = pred_lda)
+
+TN <- cmat_lda[1, 1]
+FN <- cmat_lda[2, 1]
+FP <- cmat_lda[1, 2]
+TP <- cmat_lda[2, 2]
+
+# PPV
+TP / (TP + FP)
+
+# NPV
+TN / (TN + FN)
+
+# The performance is exactly the same
+```
+
+---
+
+__Compare the classification performance of `lr_mod` and `lda_mod` for the new patients in the `data/new_patients.csv`.__
+
+---
+
+
+```{r compare, message = FALSE}
+
+new_patients <- read_csv("data/new_patients.csv") %>% 
+  mutate(severity = as.factor(severity),
+         gender   = as.factor(gender),
+         dose     = as.factor(dose),
+         response = as.factor(response))
+
+pred_lda_new <- predict(lda_mod, newdata = new_patients)$class
+prob_lr_new <- predict(lr_mod, newdata = new_patients, type = "response")
+pred_lr_new <- ifelse(prob_lr_new > .5, 1, 0)
+
+# lda
+cmat_lda_new <- table(true = new_patients$response, pred = pred_lda_new)
+
+
+# lr
+cmat_lr_new <- table(true = new_patients$response, pred = pred_lr_new)
+
+cmat_lda_new
+cmat_lr_new
+
+# again, the same performance
+
+
+# let's look at ppv and npv then
+PPV <- cmat_lda_new[2, 2] / sum(cmat_lda_new[, 2])
+NPV <- cmat_lda_new[1, 1] / sum(cmat_lda_new[, 1])
+
+PPV
+NPV
+
+# Out-of-sample ppv and npv is worse, as expected
+# The models perform only slightly above chance level!
+```
+
+---
+
+__Calculate the out-of-sample brier score for the `lr_mod` and give an interpretation.__
+
+
+---
+
+```{r brier}
+
+mean((prob_lr_new - (as.numeric(new_patients$response) - 1)) ^ 2)
+
+# the mean squared difference between the probability and the true class is .23
+
+```
+
 # Iris dataset
 
-The dataset we are going to use today is a dataset from [R.A. Fisher's 1936 paper on linear discriminant analysis](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02137.x): the `iris` dataset. Fisher's goal was to classify the three subspecies of iris according to the attributes of the plants: `Sepal.Length`, `Sepal.Width`, `Petal.Length`, and `Petal.Width`:
+One of the most famous classification datasets is a dataset from [R.A. Fisher's 1936 paper on linear discriminant analysis](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1469-1809.1936.tb02137.x): the `iris` dataset. Fisher's goal was to classify the three subspecies of iris according to the attributes of the plants: `Sepal.Length`, `Sepal.Width`, `Petal.Length`, and `Petal.Width`:
 
 ![source: [kaggle](http://blog.kaggle.com/2015/04/22/scikit-learn-video-3-machine-learning-first-steps-with-the-iris-dataset/)](images/iris_petal_sepal.png)
 
@@ -47,14 +221,18 @@ Fisher was successful in his venture, and he published a paper in his own journa
 
 ![](images/fisher_lda.png)
 
-We can almost completely reproduce this graph using the first discriminant function `lda()` function
+We can almost completely reproduce this graph using the first linear discriminant from the `lda()` function:
 
 
 ```{r iris}
 
+# fit lda model, i.e. calculate model parameters
 lda_iris <- lda(Species ~ ., data = iris)
-first_ld <- -as.numeric(as.matrix(iris[, -5]) %*% lda_iris$scaling[,1])
 
+# use those parameters to compute the first linear discriminant
+first_ld <- -c(as.matrix(iris[, -5]) %*% lda_iris$scaling[,1])
+
+# plot
 tibble(
   ld = first_ld,
   Species = iris$Species
@@ -101,12 +279,105 @@ iris %>%
 
 ```
 
+# Confusion matrix, continued
+
+---
+
+__Fit an additional LDA model, but this time with only `Sepal.Length` and `Sepal.Width` as predictors. Call this model `lda_iris_sepal`__
+
+---
+
+```{r ldasepal}
+
+lda_iris_sepal <- lda(Species ~ Sepal.Length + Sepal.Width, data = iris)
+
+```
+
+---
+
+__Create a confusion matrix of the `lda_iris` and `lda_iris_sepal` models. (NB: we did not split the dataset into training and test set, so use the training dataset to generate the predictions.). Which performs better?__
+
+---
+
+```{r confmat}
+
+# lda_iris
+table(true = iris$Species, predicted = predict(lda_iris)$class)
+
+# lda_iris_sepal
+table(true = iris$Species, predicted = predict(lda_iris_sepal)$class)
+
+# lda_iris performs better
+
+```
+
+The confusion matrix is the basis for many different measures of classification performance. Here are a few:
+
+
+| Full name          | Formula |
+| :----------------- | :-----: |
+| Accuracy           | correct classifications / total samples |
+| 
+
+
 
 # Classification trees
 
+Classification trees in `R` can be fit using the `rpart()` function.
+
+---
+
+__Use `rpart()` to create a classification tree for the `Species` of `iris`. Call this model `iris_tree_mod`. PLot this model using `rpart.plot()`.__
+
+---
+
 ```{r rpart}
 
-iris_tree <- rpart(Species ~ ., data = iris)
-rpart.plot(iris_tree)
+iris_tree_mod <- rpart(Species ~ ., data = iris)
+rpart.plot(iris_tree_mod)
+
+```
+
+Because the classification tree only uses two variables, we can create another insightful plot using the splits on these variables. 
+
+---
+
+__Create a scatterplot where you map `Petal.Length` to the x position and `Petal.Width` to the y position. Then, manually add a vertical and a horizontal line (using `geom_segment`) at the locations of the splits from the classification tree. Interpret this plot.__
+
+---
+
+```{r rpartplot}
+
+iris %>% 
+  ggplot(aes(x = Petal.Length, y = Petal.Width, colour = Species)) +
+  geom_point() +
+  geom_segment(aes(x = 2.5, xend = 2.5, y = -Inf, yend = Inf),
+               colour = "black") +
+  geom_segment(aes(x = 2.5, xend = Inf, y = 1.75, yend = 1.75), 
+               colour = "black") +
+  scale_colour_viridis_d() +
+  theme_minimal()
+
+# The first split perfectly separates setosa from the other two
+# the second split leads to 5 misclassifications: 
+# virginica classified as versicolor
+
+```
+
+There are several control parameters (tuning parameters) to the `rpart()` algorithm. You can find the available control parameters using `?rpart.control`.
+
+---
+
+__Create a classification tree model where the splits continue until all the observations have been classified. Call this model `iris_tree_full_mod`. Plot this model using `rpart.plot()`__
+
+---
+
+
+```{r treefull}
+
+iris_tree_full_mod <- rpart(Species ~ ., data = iris, 
+                            control = rpart.control(minbucket = 1, cp = 0))
+
+rpart.plot(iris_tree_full_mod)
 
 ```
