@@ -69,9 +69,9 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 09 </td>
     <td> Supervised learning: Classification 2 </td>
-    <td> </td>
-    <td> </td>
-    <td> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/09_Supervised_learning_Classification_2/classification_2.html"> .html </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/09_Supervised_learning_Classification_2/classification_2.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/09_Supervised_learning_Classification_2/classification_2_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 10 </td>
