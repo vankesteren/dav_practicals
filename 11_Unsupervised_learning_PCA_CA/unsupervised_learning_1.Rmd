@@ -1,0 +1,78 @@
+---
+title: "Unsupervised learning: PCA & CA"
+params:
+  answers: true
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    # pandoc_args: --output=classification_2_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+In this practical, we will learn how to use principal components analysis and correspondence analysis.
+
+We will use the packages `pROC`,  `rpart`, `rpart.plot`, and `randomForest`. For this, you will probably need to `install.packages()` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(ISLR)
+library(tidyverse)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(45)
+```
+
+# Principal components analysis
+
+`.RData` files are the efficient file format for R objects. You can load `.RData` files with the function `load()`. You can save objects to `.RData` files using the function `save()`. 
+
+---
+
+__There is a dataset stored in the file `data/saq.RData`. Load it into your environment and explore the data.__
+
+---
+
+```{r load}
+load("data/saq.RData")
+
+# Instead of using summary(), you could create a plot
+gather(saq) %>% 
+  ggplot(aes(x = key, y = value)) + 
+  geom_count(colour = "#00008B") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+The 23 questions in the saq questionnaire are 5-point scaled variables ranging from "Strongly agree" (1) to "Strongly disagree" (5). 
+
+---
+
+__Standardise the variables to make sure they each have a mean of 0 and a standard deviation of 1. Hint: use the `scale()` function.__
+
+---
+
+```{r scale}
+saq_scaled <- as_tibble(scale(saq))
+
+# I'll show it visually
+gather(saq_scaled) %>% 
+  ggplot(aes(x = key, y = value)) + 
+  geom_hline(yintercept = 0) +
+  geom_count(colour = "#00008B") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
