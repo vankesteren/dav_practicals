@@ -1,5 +1,5 @@
 ---
-title: "Data manipulation"
+title: "Data Visualisation using ggplot2"
 params:
   answers: true
 mainfont: Arial
@@ -21,7 +21,7 @@ output:
 
 # Introduction
 
-In this practical, we will learn how to visualise data after we have cleaned up our datasets using the `dplyr` verbs from the previous practical. `filter()`, `arrange()`, `mutate()`, `select()`, `summarise()`. For the visualisations, we will be using a package that implements the grammar of graphics: `ggplot2`. 
+In this practical, we will learn how to visualise data after we have cleaned up our datasets using the `dplyr` verbs from the previous practical: `filter()`, `arrange()`, `mutate()`, `select()`, and `summarise()`. For the visualisations, we will be using a package that implements the grammar of graphics: `ggplot2`. Please review the lecture slide for week2 beforehand.
 
 Don't forget to open the project file `03_Data_visualisation.Rproj` and to create your `.Rmd` or `.R` file to work in.
 
@@ -32,7 +32,7 @@ library(tidyverse)
 
 An excellent reference manual for `ggplot` can be found on the tidyverse website: [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/)
 
-# What is `ggplot`
+# What is `ggplot`?
 
 Plots can be made in `R` without the use of `ggplot` using `plot()`, `hist()` or `barplot()` and related functions. Here is an example of each on the `Hitters` dataset from `ISLR`:
 
@@ -140,7 +140,7 @@ Mapping aesthetics is usually done in the main `ggplot()` call. Aesthetic mappin
 
 ---
 
-3. __Replicate the first `homeruns_plot`, but map the `Hits` to the y-axis and the `HmRun` to the x-axis instead.__
+3. __Plot the first `homeruns_plot` again, but map the `Hits` to the y-axis and the `HmRun` to the x-axis instead.__
 
 ---
 
@@ -178,7 +178,7 @@ Examples of aesthetics are:
 
 # Geoms
 
-Up until now we have used two geoms: contour lines and points. The geoms in `ggplot2` are added via the `geom_<geomtype>()` functions. Each geom has a required aesthetic mapping to work. For example, `geom_point()` needs at least and x and y position mapping, as you can read [here](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics).
+Up until now we have used two geoms: contour lines and points. The geoms in `ggplot2` are added via the `geom_<geomtype>()` functions. Each geom has a required aesthetic mapping to work. For example, `geom_point()` needs at least and x and y position mapping, as you can read [here](https://ggplot2.tidyverse.org/reference/geom_point.html#aesthetics). You can check the required aesthetic mapping for each geom via the `?geom_<geomtype>`.
 
 ---
 
@@ -205,7 +205,7 @@ Several types of plots are useful for exploratory data analysis. In this section
 
 
 ```{r geomhist, include = params$answers}
-gg_students %>% 
+gg_students %>%
   ggplot(aes(x = grade)) +
   geom_histogram(binwidth = .5)
 ```
@@ -267,7 +267,7 @@ Another common task is to compare distributions across groups. A classic example
 
 ---
 
-10. __Create a boxplot of student grades per programme in the `gg_students` dataset you made earlier: map the programme variable to the x position and the grade to the y position. For extra visual aid, you can additionally map the programme variable to the fill aesthetic__
+10. __Create a boxplot of student grades per programme in the `gg_students` dataset you made earlier: map the programme variable to the x position and the grade to the y position. For extra visual aid, you can additionally map the programme variable to the fill aesthetic.__
 
 ---
 
@@ -303,7 +303,7 @@ gg_students %>%
 
 ---
 
-12. __Comparison of distributions across categories can also be done by adding a fill aesthetic to the density plot you made earlier. Try this out. To take care of the overlap, you might want to add some transparency in the `geom_density()` function using the `alpha` argument__
+12. __Comparison of distributions across categories can also be done by adding a fill aesthetic to the density plot you made earlier. Try this out. To take care of the overlap, you might want to add some transparency in the `geom_density()` function using the `alpha` argument.__
 
 ---
 
@@ -324,20 +324,19 @@ We can display amounts or proportions as a bar plot to compare group sizes of a 
 
 ---
 
-13. __Create a bar plot of the variable `Years` from the `Hitters` dataset. Use `mutate()` and `as.factor()` to convert this continuous variable to a factor before entering the data into the `ggplot()` function__
+13. __Create a bar plot of the variable `Years` from the `Hitters` dataset. __
 
 ---
 
 
 ```{r ggbarplot, include = params$answers}
 Hitters %>% 
-  mutate(Years = as.factor(Years)) %>% 
   ggplot(aes(x = Years)) + 
   geom_bar() +
   theme_minimal()
 ```
 
-`geom_bar()` automatically transforms factor levels to counts, similar to how the function `table()` works:
+`geom_bar()` automatically transforms variables to counts (see `?stat_count`), similar to how the function `table()` works:
 
 ```{r table}
 table(Hitters$Years)
@@ -349,11 +348,10 @@ The `Smarket` dataset contains daily return rates and trade volume for 1250 days
 
 ---
 
-14. __Use `geom_line()` to make a line plot out of the first 200 observations of the variable `Volume` (the number of trades made on each day) of the `Smarket` dataset. You will need to create a `Day` variable using `mutate()` to map to the x-position. This variable can simply be the integers from 1 to 200.__
+14. __Use `geom_line()` to make a line plot out of the first 200 observations of the variable `Volume` (the number of trades made on each day) of the `Smarket` dataset. You will need to create a `Day` variable using `mutate()` to map to the x-position. This variable can simply be the integers from 1 to 200. Remember, you can select the first 200 rows using `Smarket[1:200, ]`.__
 
 ---
 
-Remember, you can select the first 200 rows using `Smarket[1:200, ]`.
 
 ```{r line, include = params$answers}
 Smarket[1:200,] %>% 
@@ -377,12 +375,13 @@ Smarket[1:200, ] %>%
   mutate(Day = 1:200) %>% 
   ggplot(aes(x = Day, y = Volume)) +
   geom_line(colour = "#00008b", size = 1) +
+  geom_point(colour = "#00008b", size = 1) +
   theme_minimal()
 ```
 
 ---
 
-16. __Use the function `which.max()` to find out which of the first 200 days has the highest trade volume and use the function `max()` to find out how large this volume was__
+16. __Use the function `which.max()` to find out which of the first 200 days has the highest trade volume and use the function `max()` to find out how large this volume was.__
 
 ---
 
@@ -393,7 +392,7 @@ max(Smarket[1:200, ]$Volume)
 
 ---
 
-17. __Use `geom_label(aes(x = your_x, y = your_y, label = "Peak volume"))` to add a label to this day. Place the label near the peak!__
+17. __Use `geom_label(aes(x = your_x, y = your_y, label = "Peak volume"))` to add a label to this day. You can use either the values or call the functions. Place the label near the peak!__
 
 ---
 
@@ -413,7 +412,7 @@ This exercise shows that aesthetics can also be mapped separately per geom, in a
 
 ---
 
-18. __Create a data frame called `baseball` based on the `Hitters` dataset. In this data frame, create a factor variable which splits players' salary range into 3 categories. Tip: use the `cut()` function and assign nice `labels` to the categories. In addition, create a variable which indicates the proportion of career hits that was a home run.__
+18. __Create a data frame called `baseball` based on the `Hitters` dataset. In this data frame, create a factor variable which splits players' salary range into 3 categories. Tip: use the `filter()` function to remove the missing values, and then use the `cut()` function and assign nice `labels` to the categories. In addition, create a variable which indicates the proportion of career hits that was a home run.__
 
 ---
 
@@ -451,7 +450,7 @@ baseball_plot
 
 ---
 
-20. __Split up this plot into four parts based on the salary range variable you calculated. Use the facet_wrap() function for this; look at the examples in the help file for tips.__
+20. __Split up this plot into three parts based on the salary range variable you calculated. Use the `facet_wrap()` function for this; look at the examples in the help file for tips.__
 
 ---
 
@@ -461,7 +460,7 @@ baseball_plot + facet_wrap(vars(Salary_range))
 
 ```
 
-Faceting can help interpretation. In this case, we can see that high-salary earners are far away from the point (0, 0) on average, but that there are low-salary earners which are even further away. Faceting should always be done using a `factor` variable. The order of the facets is taken from the `levels()` of the factor. Changing the order of the facets can be done using `fct_relevel()` if needed.
+Faceting can help interpretation. In this case, we can see that high-salary earners are far away from the point (0, 0) on average, but that there are low-salary earners which are even further away. Faceting should preferably be done using a `factor` variable. The order of the facets is taken from the `levels()` of the factor. Changing the order of the facets can be done using `fct_relevel()` if needed.
 
 # Final exercise
 
