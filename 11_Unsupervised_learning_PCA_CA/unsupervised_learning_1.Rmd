@@ -36,43 +36,175 @@ set.seed(45)
 
 # Principal components analysis
 
-`.RData` files are the efficient file format for R objects. You can load `.RData` files with the function `load()`. You can save objects to `.RData` files using the function `save()`. 
 
 ---
 
-__There is a dataset stored in the file `data/saq.RData`. Load it into your environment and explore the data.__
+__Explore the `Auto` dataset from the `ISLR` package using summary statistics.__
 
 ---
 
 ```{r load}
-load("data/saq.RData")
+summary(Auto)
 
-# Instead of using summary(), you could create a plot
-gather(saq) %>% 
-  ggplot(aes(x = key, y = value)) + 
-  geom_count(colour = "#00008B") + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+# The dataset contains characteristics of cars
 ```
 
-The 23 questions in the saq questionnaire are 5-point scaled variables ranging from "Strongly agree" (1) to "Strongly disagree" (5). 
+ 
 
----
+--- 
 
-__Standardise the variables to make sure they each have a mean of 0 and a standard deviation of 1. Hint: use the `scale()` function.__
+__Remove the name, year, and origin columns, and standardise the remaining variables using the `scale()` function. Name the resulting dataset `auto_scaled`.__
 
 ---
 
 ```{r scale}
-saq_scaled <- as_tibble(scale(saq))
+auto_scaled <- 
+  Auto %>% 
+  select(-name, -year, -origin) %>% 
+  scale() %>% 
+  as_tibble()
 
-# I'll show it visually
-gather(saq_scaled) %>% 
-  ggplot(aes(x = key, y = value)) + 
-  geom_hline(yintercept = 0) +
-  geom_count(colour = "#00008B") + 
-  theme_minimal() + 
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
+# optionally, we can also plot the scaled dataset to see what happened.
+auto_scaled %>% 
+  gather(key = "Variable", value = "Z-score") %>% 
+  ggplot(aes(x = Variable, y = `Z-score`)) + 
+  geom_point(colour = "#00008B", position = position_jitter(0.15, 0)) + 
+  theme_minimal()
 ```
 
+---
+
+__Use the `pca()` function to create a principal components analysis.__
+
+
+```{r pca}
+pca_auto <- princomp(auto_scaled)
+
+varimax(pca_auto$loadings[, 1:3])
+
+pca_auto$scores[, 1:2] %>% 
+  as_tibble %>% 
+  bind_cols(ISLR::Auto) %>% 
+  ggplot(aes(x = Comp.1, y = Comp.2, colour = year)) +
+  geom_point() +
+  theme_minimal() +
+  scale_colour_viridis_c()
+```
+
+# Final assignment: High-dimensional PCA using SVD
+
+This is an advanced assignment. You will have to figure out how to create PC scores from the output of a singular value decomposition.
+
+Principal components analysis can also be used to generate a low-dimensional number of features from a high-dimensional (p > n) dataset. One area where high-dimensional data frequently occurs is in chemometrics, assessing the properties of materials using spectroscopy [(Wikipedia link)](https://en.wikipedia.org/w/index.php?title=Near-infrared_spectroscopy&oldid=865590066).
+
+The corn dataset is stored as a `.RData` file, a native file format from `R` which efficiently stores any `R` object. The `load()` function immediately loads the dataset `corn` into your environment.
+
+---
+
+__Load the dataset "data/corn.RData" using the function `load()`.__
+
+---
+
+```{r loadcorn}
+# Load the data. Source: http://www.eigenvector.com/data/Corn/index.html 
+# converted from matlab to an R data object.
+load("data/corn.RData")
+```
+
+The first four columns contain properties of the corn samples (80 corn samples were analysed) and the remaining 700 columns indicate the measured transmittance at different near-infrared wavelengths. You can find more information about this dataset at [the source website](http://www.eigenvector.com/data/Corn/index.html).
+
+
+Here is a plot of wavelength versus transmittance, with one line for each of the 80 corn samples:
+
+```{r cornplot}
+t(corn[, -c(1:4)]) %>% 
+  as_tibble %>% 
+  gather(key = corn, value = signal) %>% 
+  mutate(wavelength = rep(seq(1100, 2498, 2), 80)) %>% 
+  ggplot(aes(x = wavelength, y = signal, colour = corn)) +
+  geom_line() +
+  theme_minimal() +
+  scale_colour_viridis_d(guide = "none") +
+  labs(x = "Wavelength (nm)",
+       y = "Transmittance",
+       title = "NIR Spectroscopy of 80 corn samples")
+```
+
+
+---
+
+__Use the `svd()` function to run a principal components analysis on the spectroscopy part of the corn dataset. Save the PC scores and plot the first two principal components. Create four plots, each mapping one of the four properties to the `colour` aesthetic. Which of the properties relate most to the first two principal components? Base your answer on the plots only. Then, do the same thing for PCs 5 and 6.__
+
+---
+
+
+```{r svdpca}
+# see https://stats.stackexchange.com/a/134283 for information.
+
+# Perform svd-pca
+x_scaled  <- scale(corn[, -c(1:4)], scale = FALSE)
+svd_corn  <- svd(x_scaled)
+pc_scores <- svd_corn$u %*% diag(svd_corn$d) 
+
+# Plot first two principal components versus the corn properties 
+ggcorn <-
+  corn[, 1:4] %>%
+  bind_cols(tibble(PC1 = pc_scores[, 1], 
+                   PC2 = pc_scores[, 2], 
+                   PC5 = pc_scores[, 5], 
+                   PC6 = pc_scores[, 6]))
+
+cowplot::plot_grid(
+  ggcorn %>% 
+    ggplot(aes(x = PC1, y = PC2, colour = Moisture)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC1, y = PC2, colour = Oil)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC1, y = PC2, colour = Protein)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC1, y = PC2, colour = Starch)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c()
+)
+
+# Moisture and oil seem to have a strong relation with the first two PCs, 
+# and their high values are on opposite sides.
+# The high/low values for protein and starch seem more randomly 
+# ordered in these plots. 
+
+cowplot::plot_grid(
+  ggcorn %>% 
+    ggplot(aes(x = PC5, y = PC6, colour = Moisture)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC5, y = PC6, colour = Oil)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC5, y = PC6, colour = Protein)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c(),
+  ggcorn %>% 
+    ggplot(aes(x = PC5, y = PC6, colour = Starch)) +
+    geom_point() +
+    theme_minimal() + 
+    scale_colour_viridis_c()
+)
+
+# Here, it's protein and starch that relate more to the PCs. They too are 
+# opposites in these samples.
+```
