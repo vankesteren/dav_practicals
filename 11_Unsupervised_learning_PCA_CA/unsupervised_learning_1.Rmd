@@ -22,11 +22,12 @@ output:
 # Introduction
 In this practical, we will learn how to use principal components analysis and correspondence analysis.
 
-We will use the packages `pROC`,  `rpart`, `rpart.plot`, and `randomForest`. For this, you will probably need to `install.packages()` before running the `library()` functions.
+We will use the package `ca`. For this, you will probably need to `install.packages("ca")` before running the `library()` functions.
 
 ```{r packages, warning = FALSE, message = FALSE}
 library(ISLR)
 library(tidyverse)
+library(ca)
 ```
 
 
@@ -36,59 +37,173 @@ set.seed(45)
 
 # Principal components analysis
 
+---
+
+__Load the questionnaire dataset and explore it.__
 
 ---
 
-__Explore the `Auto` dataset from the `ISLR` package using summary statistics.__
+```{r load, message = FALSE}
+ques_df <- read_csv("data/questionnaire.csv")
 
----
+summary(ques_df)
 
-```{r load}
-summary(Auto)
-
-# The dataset contains characteristics of cars
+# a lot of likert scale variables!
 ```
 
  
+---
+
+__Split the dataset into two, one data frame with the `BIGF` questions (`bigf_df`), and one with the `empathy` questions (`empa_df`). Hint: use `contains()` in combination with `select()` for this!__
+
+---
+
+```{r split}
+
+bigf_df <- ques_df %>% select(contains("bigf"))
+empa_df <- ques_df %>% select(contains("empa"))
+
+```
 
 --- 
 
-__Remove the name, year, and origin columns, and standardise the remaining variables using the `scale()` function. Name the resulting dataset `auto_scaled`.__
+__Standardise the two datasets using the `scale()` function.__
 
 ---
 
 ```{r scale}
-auto_scaled <- 
-  Auto %>% 
-  select(-name, -year, -origin) %>% 
+bigf_sc <- 
+  bigf_df %>% 
   scale() %>% 
   as_tibble()
 
-# optionally, we can also plot the scaled dataset to see what happened.
-auto_scaled %>% 
-  gather(key = "Variable", value = "Z-score") %>% 
-  ggplot(aes(x = Variable, y = `Z-score`)) + 
-  geom_point(colour = "#00008B", position = position_jitter(0.15, 0)) + 
-  theme_minimal()
+empa_sc <- 
+  empa_df %>% 
+  scale() %>% 
+  as_tibble()
+
+
+# optionally, we can also plot the scaled datasets to see what happened.
+bubble_plot <- function(df) {
+  df %>% 
+    gather(key = Question, value = Answer) %>% 
+    mutate(Question = str_to_lower(Question)) %>%
+    ggplot(aes(x = Question, y = Answer)) + 
+    geom_count(colour = "#00008B") + 
+    theme_minimal() + 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+}
+
+cowplot::plot_grid(
+  bubble_plot(bigf_df) + ggtitle("bigf unscaled"),
+  bubble_plot(bigf_sc) + ggtitle("bigf scaled"),
+  bubble_plot(empa_df) + ggtitle("empa unscaled"),
+  bubble_plot(empa_sc) + ggtitle("empa scaled")
+)
 ```
 
 ---
 
-__Use the `pca()` function to create a principal components analysis.__
+__Use the `prcomp()` function to create a principal components analysis for each of the scaled datasets. Save the result as `pca_bigf` and pca_empa`.__
 
+---
 
 ```{r pca}
-pca_auto <- princomp(auto_scaled)
+# use prcomp here?
+pca_bigf <- prcomp(bigf_sc)
+pca_empa <- prcomp(empa_sc)
+```
 
-varimax(pca_auto$loadings[, 1:3])
+---
 
-pca_auto$scores[, 1:2] %>% 
-  as_tibble %>% 
-  bind_cols(ISLR::Auto) %>% 
-  ggplot(aes(x = Comp.1, y = Comp.2, colour = year)) +
+__Use the first 2 principal components of the bigf and empa datasets to 
+---
+
+```{r plot}
+
+bind_cols(as_tibble(pca_bigf$x[, 1:2]), empa = pca_empa$x[, 1]) %>% 
+  ggplot(aes(x = PC1, y = empa, colour = ques_df$Gender)) +
   geom_point() +
   theme_minimal() +
-  scale_colour_viridis_c()
+  scale_colour_viridis_d()
+
+```
+
+# Correspondence analysis
+
+We've preprocessed a dataset from kaggle on song lyrics for the purpose of this practical. You can find the original dataset [here](https://www.kaggle.com/mousehead/songlyrics) or in the `data/` directory. If you want to know which preprocessing steps have been used and how it has been saved, you can take a look at the file `data/song_data_preproc.R`.
+
+The `songs_ca` dataset is stored as a `.RData` file, a native file format from `R` which efficiently stores any `R` object. The `load()` function immediately loads the dataset `songs_ca` into your environment.
+
+---
+
+__Load the preprocessed `songs_ca` dataset into the environment from the `data/songs_ca.RData` file.__
+
+---
+
+```{r loadca}
+load("data/songs_ca.RData")
+```
+
+
+---
+
+__Use the `ca()` function from the `ca` package to create a correspondence analysis object.__
+
+---
+
+```{r ca1}
+ca_mod <- ca(songs_ca)
+```
+
+
+---
+
+__Use the `summary()` function on this object. What can you conclude about the first two inertias? What can you say about the word "love" in this dataset?__
+
+---
+
+```{r sumca}
+summary(ca_mod)
+```
+
+---
+
+__Recreate using `ggplot` the biplot that results from the `plot()` method on this object. Hint: for this, you can use the `rowcoord` and `colcoord` elements of the object.__
+
+---
+
+```{r ggca}
+gg_ca <- 
+  rbind(ca_mod$rowcoord[, 1:2], ca_mod$colcoord[, 1:2]) %>% 
+  as_tibble() %>% 
+  mutate(name = c(rownames(songs_ca), colnames(songs_ca)), 
+         type = c(rep("row", 12), rep("col", 26)))
+
+gg_ca %>%
+  ggplot(aes(x = Dim1, y = Dim2, shape = type, colour = type, label = name)) +
+  geom_point() +
+  geom_text(hjust = 0, nudge_x = 0.05) +
+  coord_fixed() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(x = "Dimension 1", y = "Dimension 2", 
+       title = "CA of popular words in songs")
+
+```
+
+---
+
+__What can you conclude about Exo and Janis Joplin? Can you come up with reasonable explanations for this?__
+
+---
+
+```{r ans}
+
+# Exo is a k-pop band. Janis Joplin was born in 1943 (and a member of the 
+# infamous 27 club), so her lyrics are from a different period than the other
+# artists.
+
 ```
 
 # Final assignment: High-dimensional PCA using SVD
@@ -96,8 +211,6 @@ pca_auto$scores[, 1:2] %>%
 This is an advanced assignment. You will have to figure out how to create PC scores from the output of a singular value decomposition.
 
 Principal components analysis can also be used to generate a low-dimensional number of features from a high-dimensional (p > n) dataset. One area where high-dimensional data frequently occurs is in chemometrics, assessing the properties of materials using spectroscopy [(Wikipedia link)](https://en.wikipedia.org/w/index.php?title=Near-infrared_spectroscopy&oldid=865590066).
-
-The corn dataset is stored as a `.RData` file, a native file format from `R` which efficiently stores any `R` object. The `load()` function immediately loads the dataset `corn` into your environment.
 
 ---
 
@@ -112,7 +225,6 @@ load("data/corn.RData")
 ```
 
 The first four columns contain properties of the corn samples (80 corn samples were analysed) and the remaining 700 columns indicate the measured transmittance at different near-infrared wavelengths. You can find more information about this dataset at [the source website](http://www.eigenvector.com/data/Corn/index.html).
-
 
 Here is a plot of wavelength versus transmittance, with one line for each of the 80 corn samples:
 
