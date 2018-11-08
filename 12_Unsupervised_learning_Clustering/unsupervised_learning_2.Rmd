@@ -1,0 +1,92 @@
+---
+title: "Unsupervised learning: Clustering"
+params:
+  answers: false
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    # pandoc_args: --output=unsupervised_learning_2_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+In this practical, we will learn how to perform clustering.
+
+We will use the package `ca`. For this, you will probably need to `install.packages("ca")` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(ISLR)
+library(tidyverse)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(45)
+```
+
+# K-means clustering
+
+The euclidian distance between two vectors $\mathbf{x}$  and $\mathbf{y}$ of length $n$ is $D = || \mathbf{x} - \mathbf{y} ||_2 = \sqrt{\sum_{i = 1}^n (x_i - y_i)^2}$. These two vectors represent points in $n$-dimensional space and the euclidian distance is the straight-line distance between these points.
+
+---
+
+__Write a function `l2_dist(x, y)` that takes in two vectors and outputs the euclidian distance between the two vectors.__
+
+---
+
+```{r distfun}
+# there are several ways to do this. Here are two.
+# way 1 (slow):
+l2_dist <- function(x, y) {
+  sumsq <- 0
+  for (i in 1:length(x)) {
+    sumsq <- sumsq + (x[i] - y[i])^2
+  }
+  return(sqrt(sumsq))
+}
+
+# way 2 (fast):
+l2_dist <- function(x, y) {
+  sqrt(sum((x - y)^2))
+}
+```
+
+---
+
+__Load the dataset `data/clusterdata.csv`. Create a scatter plot of this dataset, mapping `x1` to the x position and `x2` to the y position. Use `coord_fixed()` to ensure that the x and y axes are the same size w.r.t. their values.__
+
+---
+
+```{r clusdat, message = FALSE}
+
+clus_df <- read_csv("data/clusterdata.csv")
+
+clus_df %>% 
+  ggplot(aes(x = x1, y = x2)) +
+  geom_point() +
+  coord_fixed() +
+  theme_minimal()
+
+```
+
+---
+
+Program a k-means clustering algorithm according to the following specifications__
+
+---
+
+- Input: a data frame with n rows and p columns
+- Output: a list with:
+  - a matrix of k means with k rows and p columns
+  - a vector of n cluster assignments (factor type)
+  - a matrix of n distances
