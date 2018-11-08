@@ -83,8 +83,8 @@ You are going to be working inside the practicals folder. [Download the folder](
     <td> 11 </td>
     <td> Unsupervised learning: PCA & Correspondence Analysis </td>
     <td> <a href="https://vankesteren.github.io/dav_practicals/11_Unsupervised_learning_PCA_CA/unsupervised_learning_1.html"> .html </a> </td>
-    <td> </td>
-    <td> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/11_Unsupervised_learning_PCA_CA/unsupervised_learning_1.pdf"> .pdf </a> </td>
+    <td> <a href="https://vankesteren.github.io/dav_practicals/11_Unsupervised_learning_PCA_CA/unsupervised_learning_1_answers.html"> Answers </a> </td>
   </tr>
   <tr>
     <td> 12 </td>
