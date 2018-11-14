@@ -1,0 +1,233 @@
+---
+title: "Unsupervised learning: Clustering"
+params:
+  answers: false
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    df_print: paged
+    theme: paper
+    # pandoc_args: --output=unsupervised_learning_2_answers.html
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
+---
+
+# Introduction
+In this practical, we will learn how to perform clustering.
+
+We will use the package `igraph`. For this, you will probably need to `install.packages("igraph")` before running the `library()` functions.
+
+```{r packages, warning = FALSE, message = FALSE}
+library(igraph)
+library(ISLR)
+library(tidyverse)
+```
+
+
+```{r seed, include = FALSE}
+set.seed(123)
+```
+
+---
+
+__Load the dataset `data/clusterdata.csv`. Create a scatter plot of this dataset, mapping `x1` to the x position and `x2` to the y position. Use `coord_fixed()` to ensure that the x and y axes are the same size w.r.t. their values.__
+
+---
+
+```{r clusdat, message = FALSE}
+
+clus_df <- read_csv("data/clusterdata.csv")
+
+clus_df %>% 
+  ggplot(aes(x = x1, y = x2)) +
+  geom_point() +
+  coord_fixed() +
+  theme_minimal()
+
+```
+
+# K-means clustering
+
+The `kmeans()` function implements k-means clustering.
+
+---
+
+__Create two cluster objects using the `kmeans()` function using the same data, one with 3 clusters and one with 5 clusters.__
+
+---
+
+```{r kmeans1}
+
+kmeans_3 <- kmeans(clus_df, centers = 3)
+kmeans_5 <- kmeans(clus_df, centers = 5)
+
+```
+
+---
+
+__Create two scatterplots where you map the cluster assignment of the cluster objects to the colour of the points.__
+
+---
+
+```{r plots}
+# We can use the cowplot package to display these next to one another
+
+cowplot::plot_grid(
+  
+  # K = 3 plot
+  clus_df %>% 
+    ggplot(aes(x = x1, y = x2, colour = factor(kmeans_3$cluster))) +
+    geom_point() +
+    coord_fixed() +
+    theme_minimal() +
+    scale_colour_viridis_d(guide = "none"),
+  
+  # K = 5 plot
+  clus_df %>% 
+    ggplot(aes(x = x1, y = x2, colour = factor(kmeans_5$cluster))) +
+    geom_point() +
+    coord_fixed() +
+    theme_minimal() +
+    scale_colour_viridis_d(guide = "none")
+  
+)
+
+```
+
+# Hierarchical clustering
+
+
+```{r hclust}
+
+hclust_mod <- hclust(dist(clus_df))
+
+```
+
+
+---
+
+__Does hierarchical clustering with a cutoff at 3 clusters yield the same result as 3-means clustering? Hint: use the `cutree()` function to cut off the hierarchical clustering object at 3 clusters.__
+
+---
+
+```{r hclustkmeans}
+# first, let's make two factors with congruent labels for the observations
+hclust_fac <- factor(cutree(hclust_mod, k = 3), labels = c("a", "b", "c"))
+kmeans_fac <- factor(kmeans_3$cluster,          labels = c("b", "c", "a"))
+
+# then we can check whether the labels are the same
+same_clust <- hclust_fac == kmeans_fac
+all(same_clust)
+# So there are differences. How many?
+sum(!same_clust)
+
+# we could also make a visual comparison of the differences
+ggplot(clus_df, aes(x = x1, y = x2)) +
+  geom_point(size = 6, colour = ifelse(same_clust, "#00000000", "#00000030")) +
+  geom_point(aes(colour = hclust_fac), position = position_nudge(-0.07)) +
+  geom_point(aes(colour = kmeans_fac), position = position_nudge(0.07)) +
+  scale_colour_viridis_d() +
+  coord_fixed() +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+
+# Programming assignment: manual K-means clustering
+
+The euclidian distance between two vectors $\mathbf{x}$  and $\mathbf{y}$ of length $n$ is $D = || \mathbf{x} - \mathbf{y} ||_2 = \sqrt{\sum_{i = 1}^n (x_i - y_i)^2}$. These two vectors represent points in $n$-dimensional space and the euclidian distance is the straight-line distance between these points.
+
+---
+
+__Write a function `l2_dist(x, y)` that takes in two vectors and outputs the euclidian distance between the two vectors.__
+
+---
+
+```{r distfun}
+# there are several ways to do this. Here are two.
+# way 1 (slow):
+l2_dist <- function(x, y) {
+  sumsq <- 0
+  for (i in 1:length(x)) {
+    sumsq <- sumsq + (x[i] - y[i])^2
+  }
+  return(sqrt(sumsq))
+}
+
+# way 2 (fast):
+l2_dist <- function(x, y) {
+  sqrt(sum((x - y)^2))
+}
+```
+
+
+---
+
+__Program a k-means clustering algorithm and apply it to this data. Use Algorithm 10.1 from the ISLR book. Visualise your result.__
+
+---
+
+```{r clusalg}
+# as with any program, there are many ways to do this! The example answer is
+# not necessarily the best answer.
+
+my_clus <- function(X, k) {
+  # 1. Randomly assign a number, from 1 to K, to each of the observations.
+  # These serve as initial cluster assignments for the observations.
+  n <- nrow(X)
+  p <- ncol(X)
+  clus_vec <- sample(rep(1:k, length.out = n))
+  
+  # 2. Iterate until the cluster assignments stop changing:
+  changed <- TRUE
+  while (changed) {
+    
+    # (a) For each of the K clusters, compute the cluster centroid
+    centroids <- matrix(NA, nrow = k, ncol = p)
+    for (i in 1:k) {
+      X_clus <- X[clus_vec == i, ]
+      centroids[i, ] <- colMeans(X_clus)
+    }
+    
+    # (b) Assign each observation to the cluster whose centroid is closest
+    clus_vec_old <- clus_vec
+    for (i in 1:n) {
+      
+      distances <- rep(0, k)
+      for (j in 1:k) {
+        distances[j] <- l2_dist(X[i, ], centroids[j, ])
+      }
+      
+      clus_vec[i] <- which.min(distances)
+    }
+    
+    changed <- !identical(clus_vec_old, clus_vec)
+  }
+  
+  # Return the centroids and the cluster assignments
+  list(
+    assign    = clus_vec, 
+    centroids = centroids
+  )
+}
+
+
+# let's use it
+clus_result <- my_clus(clus_df, 3)
+
+# now to plot and compare
+clus_df %>% 
+  ggplot(aes(x = x1, y = x2, colour = factor(clus_result$assign))) +
+  geom_point() +
+  coord_fixed() +
+  theme_minimal() +
+  scale_colour_viridis_d(guide = "none")
+```
