@@ -91,7 +91,7 @@ You are going to be working inside the practicals folder. [Download the folder](
     <td> Unsupervised learning: Clustering </td>
     <td> </td>
     <td> </td>
-    <td> </td>
+    <td> <a href="http://uudav.nl/12_Unsupervised_learning_Clustering/unsupervised_learning_2.html"> Answers </a> </td>
   </tr>
 </table>
 
