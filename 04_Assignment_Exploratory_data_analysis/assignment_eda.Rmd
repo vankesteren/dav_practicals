@@ -26,8 +26,9 @@ You can use data from anywhere. For example, you may use [Google dataset search]
 ### Format: stand-alone RStudio project folder
 - Should have these components:
   - the dataset (csv, xlsx, sav, dat, json, or any other common format)
-  - one .Rmd notebook file
+  - one .Rmd (R Markdown) file
   - a compiled .pdf or .html
+  - we should be able to compile the .Rmd to the same .pdf or .html. That means no errors!
 
 ### Example of how the folder could look before hand-in
 
