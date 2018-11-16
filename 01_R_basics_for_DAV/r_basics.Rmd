@@ -6,15 +6,15 @@ mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
-  pdf_document:
-    toc: true
-    toc_depth: 1
-    latex_engine: xelatex
   html_document:
     toc: true
     toc_depth: 1
     toc_float: true
     theme: paper
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
 ---
 
 # Introduction
@@ -156,7 +156,7 @@ RStudio may ask you to install several packages. You should allow it to!
 
 ---
 
-The assignments in week 3 and week 10 need to be handed in as an `R` project folder with data, a `.Rmd` file, and the `.pdf` file generated from it.
+The assignments in week 3 and week 8 need to be handed in as an `R` project folder with data, a `.Rmd` file, and the `.pdf` file generated from it.
 
 From practical 2 onwards, we will always start by opening the `R` project and do the assignments directly in the R Markdown file. Under each assignment, you can insert an `R` chunk and input your code there. If you prefer, you may also work directly in a `.R` file for the practicals. Note that if you do this, you will still have to work with an `.Rmd` file for the assignments.
 
@@ -180,6 +180,8 @@ The first book we are using in this course is [Introduction to Statistical Learn
 install.packages("ISLR")
 library(ISLR)
 ```
+
+You only need to install packages once. When they are installed on your system, you can always load them in your environment using `library()`.
 
 ---
 
@@ -216,11 +218,11 @@ Throughout this course, try to maintain a consistent and legible style for your 
 
 ---
 
-14. __Read through the [Google style guide](https://google.github.io/styleguide/Rguide.xml) for R__
+14. __Read through the [style guide](http://adv-r.had.co.nz/Style.html) on Hadley Wickham's website.__
 
 ---
 
-The most obvious deviation we will make from the google style guide is in naming things: `object_name` for variables and `Do_Something()` for functions are how we will be programming. Commenting is another important note from google style in your code. Entire commented lines should begin with # and one space. Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
+Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools > Global Options > Code > Display > Show margin.
 
 
 # Conclusion

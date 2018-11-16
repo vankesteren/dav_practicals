@@ -1604,7 +1604,7 @@ abline(reg = result, lty = 2)</code></pre>
 <li><strong>Make sure you can output the R Markdown file you created to a pdf using <code>Knit &gt; Knit to pdf</code> on top of the source pane. If there are errors, you may need to install a TeX distribution.</strong></li>
 </ol>
 <hr />
-<p>The assignments in week 3 and week 10 need to be handed in as an <code>R</code> project folder with data, a <code>.Rmd</code> file, and the <code>.pdf</code> file generated from it.</p>
+<p>The assignments in week 3 and week 8 need to be handed in as an <code>R</code> project folder with data, a <code>.Rmd</code> file, and the <code>.pdf</code> file generated from it.</p>
 <p>From practical 2 onwards, we will always start by opening the <code>R</code> project and do the assignments directly in the R Markdown file. Under each assignment, you can insert an <code>R</code> chunk and input your code there. If you prefer, you may also work directly in a <code>.R</code> file for the practicals. Note that if you do this, you will still have to work with an <code>.Rmd</code> file for the assignments.</p>
 </div>
 <div id="the-islr-package" class="section level1">
@@ -1617,6 +1617,7 @@ abline(reg = result, lty = 2)</code></pre>
 <hr />
 <pre class="r"><code>install.packages(&quot;ISLR&quot;)
 library(ISLR)</code></pre>
+<p>You only need to install packages once. When they are installed on your system, you can always load them in your environment using <code>library()</code>.</p>
 <hr />
 <ol start="12" style="list-style-type: decimal">
 <li><strong>Look at the Default dataset by running the following in the console. What does this dataset contain?</strong></li>
@@ -1642,10 +1643,10 @@ tidyverse_packages()</code></pre>
 <p>Throughout this course, try to maintain a consistent and legible style for your code. This is very important as it will make your collaborators, as well as future you happy. Being able to read and understand your own code after a year of not looking at it is possible if you use consistent style and informative comments where necessary.</p>
 <hr />
 <ol start="14" style="list-style-type: decimal">
-<li><strong>Read through the <a href="https://google.github.io/styleguide/Rguide.xml">Google style guide</a> for R</strong></li>
+<li><strong>Read through the <a href="http://adv-r.had.co.nz/Style.html">style guide</a> on Hadley Wickham’s website.</strong></li>
 </ol>
 <hr />
-<p>The most obvious deviation we will make from the google style guide is in naming things: <code>object_name</code> for variables and <code>Do_Something()</code> for functions are how we will be programming. Commenting is another important note from google style in your code. Entire commented lines should begin with # and one space. Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools &gt; Global Options &gt; Code &gt; Display &gt; Show margin.</p>
+<p>Try to adhere to this style for your assignments, too. Tip: in RStudio, you can display a vertical line at 80 characters to know when your code exceeds this. You can do this at Tools &gt; Global Options &gt; Code &gt; Display &gt; Show margin.</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
