@@ -1,11 +1,15 @@
 ---
 title: "Data Visualisation using ggplot2"
 params:
-  answers: true
+  answers: false
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
   html_document:
     toc: true
     toc_depth: 1
@@ -13,10 +17,6 @@ output:
     df_print: paged
     theme: paper
     pandoc_args: --output=data_visualisation_answers.html
-  pdf_document:
-    toc: true
-    toc_depth: 1
-    latex_engine: xelatex
 ---
 
 # Introduction
@@ -148,7 +148,7 @@ Mapping aesthetics is usually done in the main `ggplot()` call. Aesthetic mappin
 ```{r hmrn2, include = params$answers}
 ggplot(Hitters, aes(x = HmRun, y = Hits)) +
   geom_point() +
-  labs(x = "Hits", y = "Home runs")
+  labs(y = "Hits", x = "Home runs")
 ```
 
 ---
@@ -160,7 +160,7 @@ ggplot(Hitters, aes(x = HmRun, y = Hits)) +
 ```{r hmrn3, include = params$answers}
 ggplot(Hitters, aes(x = HmRun, y = Hits, colour = League, size = Salary)) +
   geom_point() +
-  labs(x = "Hits", y = "Home runs")
+  labs(y = "Hits", x = "Home runs")
 ```
 
 Examples of aesthetics are:
