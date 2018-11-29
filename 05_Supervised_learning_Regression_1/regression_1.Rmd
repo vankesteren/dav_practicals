@@ -19,6 +19,10 @@ output:
     latex_engine: xelatex
 ---
 
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.pos = 'H')
+```
+
 # Introduction
 
 In this practical, you will learn how to perform regression analysis, how to plot with confidence and prediction intervals, how to calculate MSE, perform train-test splits, and write a function for cross validation.
@@ -50,13 +54,13 @@ You can estimate a linear model using `lm()` by specifying the outcome variable 
 
 ---
 
-1. __Create a linear model object called `lm_ses` using the formula `medv ~ lstat` and the `Boston` dataset__
+1. __Create a linear model object called `lm_ses` using the formula `medv ~ lstat` and the `Boston` dataset.__
 
 ---
 
 
 ```{r lm, include = params$answers}
-lm_ses <- lm(medv ~ lstat, data = Boston)
+lm_ses <- lm(formula = medv ~ lstat, data = Boston)
 ```
 
 You have now trained a regression model with `medv` (housing value) as the outcome/dependent variable and `lstat` (socio-economic status) as the predictor / independent variable.
@@ -74,8 +78,7 @@ $$\boldsymbol{y} = \beta_0 + \beta_1\cdot \boldsymbol{x}_1 + \boldsymbol{\epsilo
 ```{r coef, include = params$answers}
 coef(lm_ses)
 
-# for each point increase in lstat, the median housing value 
-# drops by 0.95
+# for each point increase in lstat, the median housing value drops by 0.95
 ```
 
 
@@ -122,15 +125,15 @@ tibble(pred = y_pred,
   theme_minimal() +
   geom_abline(slope = 1)
 
-# I've added an ideal line where all the points would lie if the 
+# I've added an ideal line where all the points would lie on if the 
 # fit were perfect.
 ```
 
-We can also generate predictions from new data using the `newdat` argument. For that, we need to prepare a data frame with new values for the original predictors. 
+We can also generate predictions from new data using the `newdat` argument in the `predict()` method. For that, we need to prepare a data frame with new values for the original predictors. 
 
 ---
 
-6. __Use the `seq()` function to generate a sequence of 1000 equally spaced values from 1 to 40. Store this vector in a data frame (`data.frame()` or `tibble()`) with as its column name `lstat`. Name the data frame `pred_dat`__
+6. __Use the `seq()` function to generate a sequence of 1000 equally spaced values from 0 to 40. Store this vector in a data frame with (`data.frame()` or `tibble()`) as its column name `lstat`. Name the data frame `pred_dat`.__
 
 ---
 
@@ -140,7 +143,7 @@ pred_dat <- tibble(lstat = seq(0, 40, length.out = 1000))
 
 ---
 
-7. __Use the newly created data frame as the `newdata` argument to a `predict()` call for `lm_ses`. Store it in a variable named 6. `y_pred_new`.__
+7. __Use the newly created data frame as the `newdata` argument to a `predict()` call for `lm_ses`. Store it in a variable named `y_pred_new`.__
 
 ---
 
@@ -355,8 +358,9 @@ ggplot(data.frame(a = 1:10, b = 10:1, c = as.factor(letters[1:10])),
 mse(Boston$medv, predict(lm_ses))
 ```
 
-You have calculated the mean squared length of the dashed lines in the plot below
-```{r mse_plot, echo = FALSE}
+You have calculated the mean squared length of the dashed lines in the plot below.
+
+```{r mseplot2, echo = FALSE}
 Boston %>% 
   ggplot(aes(x = lstat, y = medv)) + 
   geom_segment(aes(xend = lstat, yend = predict(lm_ses)), lty = 2) +
@@ -368,7 +372,6 @@ Boston %>%
        y    = "Median house value",
        size = "Crime rate",
        title = "Boston house prices: errors")
-
 ```
 
 # Train-validation-test split
@@ -450,7 +453,7 @@ This is the estimated out-of-sample mean squared error.
 
 ---
 
-25. __Create a second model `model_2` which includes `age` and `tax` as predictors. Calculate the train and validation MSE.__
+25. __Create a second model `model_2` for the train data which includes `age` and `tax` as predictors. Calculate the train and validation MSE.__
 
 ---
 
@@ -469,7 +472,7 @@ model_2_mse_valid <- mse(y_true = boston_valid$medv,
 
 ```{r ans, include = params$answers}
 # If you are interested in out-of-sample prediction, the 
-# The answer may depend on the random sampling of the rows in the
+# answer may depend on the random sampling of the rows in the
 # dataset splitting: everyond has a different split. However, it
 # is likely that model_2 has both lower training and validation MSE.
 ``` 
