@@ -3,7 +3,7 @@ r: release
 cache:
   packages: true
 install:
-- cat " hoi "
+- echo " Install stub "
 script:
 - Rscript build_all.R
 - cat output.log
