@@ -1,0 +1,8 @@
+language: r
+r: release
+cache:
+  packages: true
+script:
+- Rscript build_all.R
+- cat output.log
+- cat message.log
