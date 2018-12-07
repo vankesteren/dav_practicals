@@ -43,7 +43,7 @@ Our goal for today is to use the `Hitters` dataset from the `ISLR` package to pr
 
 ---
 
-1. __Prepare a dataframe `baseball` from the Hitters dataset where you remove the baseball players for which the `Salary` is missing. How many baseball players are left?__
+1. __Prepare a dataframe `baseball` from the `Hitters` dataset where you remove the baseball players for which the `Salary` is missing. How many baseball players are left?__
 
 ---
 
@@ -101,7 +101,7 @@ lm_mse <- function(formula, train_data, valid_data) {
   lm_fit <- lm(formula, train_data)
   y_pred <- predict(lm_fit, newdata = valid_data)
   
-  sum((y_true - y_pred)^2)
+  mean((y_true - y_pred)^2)
 }
 
 ```
