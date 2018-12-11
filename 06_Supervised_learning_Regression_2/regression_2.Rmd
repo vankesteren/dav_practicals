@@ -1,22 +1,22 @@
 ---
 title: "Supervised learning: Regression 2"
 params:
-  answers: true
+  answers: false
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
 output: 
+  pdf_document:
+    toc: true
+    toc_depth: 1
+    latex_engine: xelatex
   html_document:
     toc: true
     toc_depth: 1
     toc_float: true
     df_print: paged
     theme: paper
-    pandoc_args: --output=regression_2_answers.html
-  pdf_document:
-    toc: true
-    toc_depth: 1
-    latex_engine: xelatex
+    # pandoc_args: --output=regression_2_answers.html
 ---
 
 # Introduction
@@ -371,7 +371,7 @@ For deciding which value of lambda to choose, we could work similarly to what we
 
 ---
 
-16. __Use the `cv_glmnet` function to determine the `lambda` value for which the out-of-sample MSE is lowest using 15-fold cross validation. As your dataset, you may use the training and validation sets bound together with bind_rows(). What is the best lambda value?__
+16. __Use the `cv.glmnet` function to determine the `lambda` value for which the out-of-sample MSE is lowest using 15-fold cross validation. As your dataset, you may use the training and validation sets bound together with bind_rows(). What is the best lambda value?__
 
 ---
 
