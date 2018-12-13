@@ -117,24 +117,27 @@ poly(1:5, degree = 3, raw = TRUE)
 
 ---
 
-5. __Use the poly() function directly in the model formula to create a 3rd-degree polynomial regression predicting `medv` using `lstat`. Compare the prediction plot to the previous prediction plot you made.__
+5. __Use the poly() function directly in the model formula to create a 3rd-degree polynomial regression predicting `medv` using `lstat`. Compare the prediction plot to the previous prediction plot you made. What happens if you change the poly() function to `raw = FALSE`?__
 
 ---
 
 ```{r p3, include = params$answers}
-pn3_mod2 <- lm(medv ~ poly(lstat, 3), data = Boston)
+pn3_mod2 <- lm(medv ~ poly(lstat, 3, raw = TRUE), data = Boston)
 pred_plot(pn3_mod2)
 
-# The plot is exactly the same
+# The plot is exactly the same as the previous prediction plot
+# By default, with raw = FALSE, poly() computes an orthogonal polynomial. 
+# This does not change the fitted values but you can see whether a certain order in the polynomial significantly improves the regression over the lower orders.
+# You can check the summary(pn3_mod2).
 ```
 
 # Piecewise regression
 
-Another basis function we can use is a step function. For example, we can split the `lstat` variable into two based on its median and take the average of these groups to predict `medv`.
+Another basis function we can use is a step function. For example, we can split the `lstat` variable into two groups based on its median and take the average of these groups to predict `medv`.
 
 ---
 
-6. __Create a model called `pw2_mod` with one predictor: `I(lstat <= median(lstat))`. Create a pred_plot with this model. Use the coefficients in `coef(med_mod)` to find out what the predicted value for a low-lstat neighbourhood is.__
+6. __Create a model called `pw2_mod` with one predictor: `I(lstat <= median(lstat))`. Create a pred_plot with this model. Use the coefficients in `coef(pw2_mod)` to find out what the predicted value for a low-lstat neighbourhood is.__
 
 ---
 
@@ -182,7 +185,7 @@ table(cut(Boston$lstat, brks))
 
 # Piecewise polynomial regression
 
-Combining piecewise regression with polynomial regression, we can create a function that creates a matrix based on a piecewise cubic basis function:
+Combining piecewise regression with polynomial regression, we can write a function that creates a matrix based on a piecewise cubic basis function:
 
 ```{r pwreg, include = !params$answers}
 piecewise_cubic_basis <- function(vec, knots = 1) {
@@ -233,6 +236,7 @@ piecewise_cubic_basis <- function(vec, knots = 1) {
     
   }
   
+  # return the piecewise polynomial matrix
   out
 }
 ```
@@ -257,7 +261,7 @@ pred_plot(pc3_mod)
 # Splines
 
 
-We're now going to take out the discontinuities from the piecewise cubic models by creating splines. First, we will manually create a cubic spline with 1 knot at the median by constructing a truncated power basis as per ISLR page 273, equation 7.10.
+We're now going to take out the discontinuities from the piecewise cubic models by creating splines. First, we will manually create a cubic spline with 1 knot at the median by constructing a truncated power basis as per [ISLR page 273](https://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf#page=287&zoom=auto,-352,436), equation 7.10.
 
 ---
 
@@ -301,7 +305,7 @@ Now we have created a complete truncated power basis for a cubic spline fit.
 
 ---
 
-14. __Create a linear model `tpb_mod` using the `tpb()` function. How many predictors are in the model? How many degrees of freedom does this model have?__
+14. __Create a linear model `tpb_mod` using the `lm()` function. How many predictors are in the model? How many degrees of freedom does this model have?__
 
 ---
 
@@ -347,7 +351,7 @@ pred_plot(bs1_mod)
 
 Note that this line fits very well, but at the right end of the plot, the curve slopes up. Theoretically, this is unexpected -- always pay attention to which predictions you are making and whether that behaviour is in line with your expectations.
 
-The last extension we will look at is the natural spline. This works in the same way as the cubic spline, with the additional constraint that the function is required to be linear at the boundaries. The function from the `splines` package for generating the basis representation for a natural spline is `ns()`. 
+The last extension we will look at is the natural spline. This works in the same way as the cubic spline, with the additional constraint that the function is required to be linear at the boundaries. The `ns()` function from the `splines` package is for generating the basis representation for a natural spline. 
 
 ---
 
@@ -359,7 +363,7 @@ The last extension we will look at is the natural spline. This works in the same
 ns3_mod <- lm(medv ~ ns(lstat, df = 3), data = Boston)
 pred_plot(ns3_mod)
 
-# Still a good fit but with liinear ends.
+# Still a good fit but with linear ends.
 ```
 
 
