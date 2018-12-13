@@ -1,7 +1,7 @@
 ---
 title: "Supervised learning: Regression 3"
 params:
-  answers: false
+  answers: true
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
@@ -12,7 +12,7 @@ output:
     toc_float: true
     df_print: paged
     theme: paper
-    # pandoc_args: --output=regression_3_answers.html
+    pandoc_args: --output=regression_3_answers.html
   pdf_document:
     toc: true
     toc_depth: 1

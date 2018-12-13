@@ -2816,16 +2816,16 @@ library(tidyverse)</code></pre>
 <hr />
 <hr />
 <ol start="5" style="list-style-type: decimal">
-<li><strong>Use the poly() function directly in the model formula to create a 3rd-degree polynomial regression predicting <code>medv</code> using <code>lstat</code>. Compare the prediction plot to the previous prediction plot you made.</strong></li>
+<li><strong>Use the poly() function directly in the model formula to create a 3rd-degree polynomial regression predicting <code>medv</code> using <code>lstat</code>. Compare the prediction plot to the previous prediction plot you made. What happens if you change the poly() function to <code>raw = FALSE</code>?</strong></li>
 </ol>
 <hr />
 </div>
 <div id="piecewise-regression" class="section level1">
 <h1>Piecewise regression</h1>
-<p>Another basis function we can use is a step function. For example, we can split the <code>lstat</code> variable into two based on its median and take the average of these groups to predict <code>medv</code>.</p>
+<p>Another basis function we can use is a step function. For example, we can split the <code>lstat</code> variable into two groups based on its median and take the average of these groups to predict <code>medv</code>.</p>
 <hr />
 <ol start="6" style="list-style-type: decimal">
-<li><strong>Create a model called <code>pw2_mod</code> with one predictor: <code>I(lstat &lt;= median(lstat))</code>. Create a pred_plot with this model. Use the coefficients in <code>coef(med_mod)</code> to find out what the predicted value for a low-lstat neighbourhood is.</strong></li>
+<li><strong>Create a model called <code>pw2_mod</code> with one predictor: <code>I(lstat &lt;= median(lstat))</code>. Create a pred_plot with this model. Use the coefficients in <code>coef(pw2_mod)</code> to find out what the predicted value for a low-lstat neighbourhood is.</strong></li>
 </ol>
 <hr />
 <hr />
@@ -2846,7 +2846,7 @@ library(tidyverse)</code></pre>
 </div>
 <div id="piecewise-polynomial-regression" class="section level1">
 <h1>Piecewise polynomial regression</h1>
-<p>Combining piecewise regression with polynomial regression, we can create a function that creates a matrix based on a piecewise cubic basis function:</p>
+<p>Combining piecewise regression with polynomial regression, we can write a function that creates a matrix based on a piecewise cubic basis function:</p>
 <pre class="r"><code>piecewise_cubic_basis &lt;- function(vec, knots = 1) {
   if (knots == 0) return(poly(vec, degree = 3, raw = TRUE))
   
@@ -2875,7 +2875,7 @@ library(tidyverse)</code></pre>
 </div>
 <div id="splines" class="section level1">
 <h1>Splines</h1>
-<p>We’re now going to take out the discontinuities from the piecewise cubic models by creating splines. First, we will manually create a cubic spline with 1 knot at the median by constructing a truncated power basis as per ISLR page 273, equation 7.10.</p>
+<p>We’re now going to take out the discontinuities from the piecewise cubic models by creating splines. First, we will manually create a cubic spline with 1 knot at the median by constructing a truncated power basis as per <a href="https://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf#page=287&amp;zoom=auto,-352,436">ISLR page 273</a>, equation 7.10.</p>
 <hr />
 <ol start="11" style="list-style-type: decimal">
 <li><strong>Create a data frame called <code>boston_tpb</code> with the columns <code>medv</code> and <code>lstat</code> from the <code>Boston</code> dataset.</strong></li>
@@ -2894,7 +2894,7 @@ library(tidyverse)</code></pre>
 <p>Now we have created a complete truncated power basis for a cubic spline fit.</p>
 <hr />
 <ol start="14" style="list-style-type: decimal">
-<li><strong>Create a linear model <code>tpb_mod</code> using the <code>tpb()</code> function. How many predictors are in the model? How many degrees of freedom does this model have?</strong></li>
+<li><strong>Create a linear model <code>tpb_mod</code> using the <code>lm()</code> function. How many predictors are in the model? How many degrees of freedom does this model have?</strong></li>
 </ol>
 <hr />
 <p>The <code>bs()</code> function from the <code>splines</code> package does all the work for us that we have done in one function call.</p>
@@ -2909,7 +2909,7 @@ library(tidyverse)</code></pre>
 </ol>
 <hr />
 <p>Note that this line fits very well, but at the right end of the plot, the curve slopes up. Theoretically, this is unexpected – always pay attention to which predictions you are making and whether that behaviour is in line with your expectations.</p>
-<p>The last extension we will look at is the natural spline. This works in the same way as the cubic spline, with the additional constraint that the function is required to be linear at the boundaries. The function from the <code>splines</code> package for generating the basis representation for a natural spline is <code>ns()</code>.</p>
+<p>The last extension we will look at is the natural spline. This works in the same way as the cubic spline, with the additional constraint that the function is required to be linear at the boundaries. The <code>ns()</code> function from the <code>splines</code> package is for generating the basis representation for a natural spline.</p>
 <hr />
 <ol start="17" style="list-style-type: decimal">
 <li><strong>Create a natural cubic spline model (<code>ns3_mod</code>) with 3 degrees of freedom using the <code>ns()</code> function. Plot it, and compare it to the <code>bs1_mod</code>.</strong></li>
