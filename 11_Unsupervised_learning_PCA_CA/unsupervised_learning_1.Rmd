@@ -19,6 +19,10 @@ output:
     latex_engine: xelatex
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 # Introduction
 In this practical, we will learn how to use principal components analysis and correspondence analysis.
 
@@ -187,6 +191,19 @@ ca_mod <- ca(songs_ca)
 
 ```{r sumca, include = params$answers}
 summary(ca_mod)
+
+# The result of the function summary(ca_mod) contains 3 tables:Eigenvalues, row 
+# variables and column variables.
+
+# In our analysis, the first two axes explain 59.8% of the variation. 
+# Table 3: Columns contains the results for column variables:
+# The principal coordinates for the first 2 dimensions (k = 1 and k = 2).
+# Squared correlations (cor) and contributions (ctr) of the points. 
+# The word "love" from the this table does not have any correlation and 
+# contribution with dimension 2. 
+# All else being equal, if two artists differ on dimension 2, the artist with a
+# lower score on this dimension uses the word "love" relatively more often.
+
 ```
 
 ---
