@@ -211,7 +211,7 @@ __Calculate the out-of-sample brier score for the `lr_mod` and give an interpret
 
 ```{r brier, include = params$answers}
 
-mean((prob_lr_new - as.numeric(new_patients$response)) ^ 2)
+mean((prob_lr_new - (as.numeric(new_patients$response) - 1)) ^ 2)
 
 # the mean squared difference between the probability and the true class is .23
 
