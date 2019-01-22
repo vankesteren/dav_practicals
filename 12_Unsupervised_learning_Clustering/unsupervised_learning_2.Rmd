@@ -1,7 +1,7 @@
 ---
 title: "Unsupervised learning: Clustering"
 params:
-  answers: false
+  answers: true
 mainfont: Arial
 fontsize: 12pt
 urlcolor: blue
@@ -17,15 +17,23 @@ output:
     toc: true
     toc_depth: 1
     latex_engine: xelatex
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 # Introduction
 In this practical, we will learn how to perform clustering.
 
-We will use the package `igraph`. For this, you will probably need to `install.packages("igraph")` before running the `library()` functions.
+We will use the packages `igraph`, `ggdendro`, and `dendextend`. For this, you will probably need to `install.packages()` before running the `library()` functions.
 
 ```{r packages, warning = FALSE, message = FALSE}
 library(igraph)
+library(ggdendro)
+library(dendextend)
 library(ISLR)
 library(tidyverse)
 ```
@@ -37,11 +45,11 @@ set.seed(123)
 
 ---
 
-__Load the dataset `data/clusterdata.csv`. Create a scatter plot of this dataset, mapping `x1` to the x position and `x2` to the y position. Use `coord_fixed()` to ensure that the x and y axes are the same size w.r.t. their values.__
+1. __Load the dataset `data/clusterdata.csv`. Create a scatter plot of this dataset, mapping `x1` to the x position and `x2` to the y position. Use `coord_fixed()` to ensure that the x and y axes are the same size w.r.t. their values.__
 
 ---
 
-```{r clusdat, message = FALSE}
+```{r clusdat, message = FALSE, include = params$answers}
 
 clus_df <- read_csv("data/clusterdata.csv")
 
@@ -59,11 +67,11 @@ The `kmeans()` function implements k-means clustering.
 
 ---
 
-__Create two cluster objects using the `kmeans()` function using the same data, one with 3 clusters and one with 5 clusters.__
+2. __Create two cluster objects with the `kmeans()` function using the same data, one with 3 clusters and one with 5 clusters.__
 
 ---
 
-```{r kmeans1}
+```{r kmeans1, include = params$answers}
 
 kmeans_3 <- kmeans(clus_df, centers = 3)
 kmeans_5 <- kmeans(clus_df, centers = 5)
@@ -72,11 +80,11 @@ kmeans_5 <- kmeans(clus_df, centers = 5)
 
 ---
 
-__Create two scatterplots where you map the cluster assignment of the cluster objects to the colour of the points.__
+3. __Create two scatterplots where you map the cluster assignment of the cluster objects to the colour of the points.__
 
 ---
 
-```{r plots}
+```{r plots, include = params$answers}
 # We can use the cowplot package to display these next to one another
 
 cowplot::plot_grid(
@@ -103,24 +111,70 @@ cowplot::plot_grid(
 
 # Hierarchical clustering
 
+The `hclust()` function implements hierarchical clustering. 
 
-```{r hclust}
+---
 
-hclust_mod <- hclust(dist(clus_df))
+4. __Compute hierarchical cluster objects with the `hclust()` function using the same data, one with complete-linkage and one with average-linkage. (Hint: use `dist()` function to produce dissimilarity structure)__
+
+---
+
+```{r hclust, include = params$answers}
+
+# Compute distance matrix
+dist_matrix <- dist(clus_df, method = "euclidean")
+# Compute 2 hierarchical clusterings
+hclust_mod1 <- hclust(dist_matrix, method = "complete")
+hclust_mod2 <- hclust(dist_matrix, method = "average")
+
+```
+
+---
+
+5. __Use the `ggdendrogram()` function from `library(ggdendro)` to plot two dendrograms for the clustering objects.__
+
+---
+
+```{r ggdendro, include = params$answers, fig.width=12}
+
+ggdendrogram(hclust_mod1) + labs(title="Complete-linkage Hierarchical clustering")
+ggdendrogram(hclust_mod2) + labs(title="Average-linkage Hierarchical clustering")
+
+```
+
+---
+
+6. __Now we want to compare dendrograms. First start by transforming the results as dendrograms and create a list to hold the two dendrograms using `dendlist()` function. And then visualise the comparison of two dendrograms with `tanglegram()` function.__
+
+---
+
+```{r dendrogramscomparison, include = params$answers, fig.retina=TRUE, fig.height=12, fig.width=10}
+
+# Create two dendrograms
+dend1 <- as.dendrogram (hclust_mod1)
+dend2 <- as.dendrogram (hclust_mod2)
+
+# Create a list to hold dendrograms
+dend_list <- dendlist(dend1, dend2)
+
+# Align and plot two dendrograms side by side
+dend_list %>%
+  untangle(method = "step1side") %>% # Find the best alignment layout
+  tanglegram()                       # Draw the two dendrograms
 
 ```
 
 
 ---
 
-__Does hierarchical clustering with a cutoff at 3 clusters yield the same result as 3-means clustering? Hint: use the `cutree()` function to cut off the hierarchical clustering object at 3 clusters.__
+7. __Does complete-linkage hierarchical clustering with a cutoff at 3 clusters yield the same result as 3-means clustering? Hint: use the `cutree()` function to cut off the hierarchical clustering object at 3 clusters.__
 
 ---
 
-```{r hclustkmeans}
+```{r hclustkmeans, include = params$answers}
 # first, let's make two factors with congruent labels for the observations
-hclust_fac <- factor(cutree(hclust_mod, k = 3), labels = c("a", "b", "c"))
-kmeans_fac <- factor(kmeans_3$cluster,          labels = c("b", "c", "a"))
+hclust_fac <- factor(cutree(hclust_mod1, k = 3), labels = c("a", "b", "c"))
+kmeans_fac <- factor(kmeans_3$cluster, labels = c("b", "c", "a"))
 
 # then we can check whether the labels are the same
 same_clust <- hclust_fac == kmeans_fac
@@ -147,11 +201,11 @@ The euclidian distance between two vectors $\mathbf{x}$  and $\mathbf{y}$ of len
 
 ---
 
-__Write a function `l2_dist(x, y)` that takes in two vectors and outputs the euclidian distance between the two vectors.__
+8. __Write a function `l2_dist(x, y)` that takes in two vectors and outputs the euclidian distance between the two vectors.__
 
 ---
 
-```{r distfun}
+```{r distfun, , include = params$answers}
 # there are several ways to do this. Here are two.
 # way 1 (slow):
 l2_dist <- function(x, y) {
@@ -171,11 +225,11 @@ l2_dist <- function(x, y) {
 
 ---
 
-__Program a k-means clustering algorithm and apply it to this data. Use Algorithm 10.1 from the ISLR book. Visualise your result.__
+9. __Program a k-means clustering algorithm and apply it to this data. Use Algorithm 10.1 from the ISLR book. Visualise your result.__
 
 ---
 
-```{r clusalg}
+```{r clusalg, , include = params$answers}
 # as with any program, there are many ways to do this! The example answer is
 # not necessarily the best answer.
 
