@@ -2,7 +2,7 @@
 
 pcks__ <- c("ISLR", "tidyverse", "haven", "readxl", "MASS", "glmnet", "splines", 
           "class", "pROC", "rpart", "rpart.plot", "randomForest", "ca", 
-          "igraph")
+          "igraph", "ggdendro", "dendextend")
 
 ip__ <- rownames(installed.packages())
 
