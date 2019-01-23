@@ -89,8 +89,8 @@ You are going to be working inside the practicals folder. [Download the folder](
   <tr>
     <td> 12 </td>
     <td> Unsupervised learning: Clustering </td>
-    <td> <a href="http://uudav.nl/11_Unsupervised_learning_Clustering/unsupervised_learning_2.html"> .html </a> </td>
-    <td> <a href="http://uudav.nl/11_Unsupervised_learning_Clustering/unsupervised_learning_2.pdf"> .pdf </a> </td>
+    <td> <a href="http://uudav.nl/12_Unsupervised_learning_Clustering/unsupervised_learning_2.html"> .html </a> </td>
+    <td> <a href="http://uudav.nl/12_Unsupervised_learning_Clustering/unsupervised_learning_2.pdf"> .pdf </a> </td>
     <td> <a href="http://uudav.nl/12_Unsupervised_learning_Clustering/unsupervised_learning_2_answers.html"> Answers </a> </td>
   </tr>
 </table>
