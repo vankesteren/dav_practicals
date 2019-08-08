@@ -152,7 +152,7 @@ Anything written in _italic font_ is optional/extra material. You can look those
     - `R Markdown`
     - The `ISLR` package (datasets from James ISLR)
     - The `tidyverse` as a dialect of the `R` language (Wickham R4DS)
-    - The [google style guide](https://google.github.io/styleguide/Rguide.xml) (ISLR does not follow it)
+    - The [google style guide](https://google.github.io/styleguide/Rguide.xml) or [tidyverse style guide](https://style.tidyverse.org/) (ISLR does not follow these)
     - _R packages on GitHub_
 
   - __Data manipulation & exploratory data analysis__
