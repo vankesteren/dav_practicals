@@ -97,11 +97,12 @@ You are going to be working inside the practicals folder. [Download the folder](
 
 ## Prerequisites
 - __Install `R` and RStudio Desktop (open source) by following the instructions [here](https://www.rstudio.com/products/rstudio/download/#download)__
-- __If you don't yet have a TeX distribution, install one:__
-  - [MiKTeX on Windows](https://miktex.org/)
-  - [MacTeX on OS X](https://www.tug.org/mactex/)
-  - TeX Live or similar on Linux (you should be able to find one for your distro)
-
+- __If you don't yet have a TeX distribution, run the following within `RStudio`:__
+  ```r
+  install.packages("tinytex")
+  library(tinytex)
+  install_tinytex()
+  ```
 
 If you have no experience with `R` or another programming language, you are going to need to catch up before starting the course and during the course. _This is not an introductory course on programming with R, but a course on data analysis and visualisation_.
 
