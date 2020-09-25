@@ -1,0 +1,66 @@
+---
+title: "Prerequisites"
+params:
+  answers: true
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    latex_engine: xelatex
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    theme: paper
+---
+
+## Required software
+
+In this course, we will exclusively use R for data analysis. First, install the latest version of R for your system (see [`https://cran.r-project.org/`](https://cran.r-project.org/)). 
+Then, install the latest (desktop open source) version of the RStudio integrated development environment ([`link`](https://www.rstudio.com/products/rstudio/download/)). 
+
+If you have no experience with `R` or another programming language, you are going to need to catch up before starting the course and during the course. _This is not an introductory course on programming with R, but a course on data analysis and visualisation_.
+
+Some good sources are:
+- The first two chapters of [introduction to R on datacamp](https://www.datacamp.com/courses/free-introduction-to-r)
+- Install `R`, play around, and [read the workflow basics chapter in Hadley Wickham's R for Data Science](http://r4ds.had.co.nz/workflow-basics.html#workflow-basics)
+- Interactive R course: install `R` as in the previous point and in the console type the following lines one by one
+```r
+install.packages("swirl")
+library(swirl)
+swirl()
+```
+and follow the guide to run the `R Programming: The basics of programming in R` interactive course.
+
+## Required `R` knowledge
+
+The following is the minimum of what you should know about `R` before starting with the first practical
+
+- What is `R` (a fancy calculator) and what is an `.R` file (a recipe for calculations)
+- What is an `R` package (a set of functions you can download to use in your own code)
+- How to run `R` code in `RStudio`
+- What is a variable `x <- 10`
+- What is a function `y <- fun(x = 10)`
+- Understand what the following statements do (tip: you may run it in `R` line by line)
+
+```r
+y <- "Let him go!"
+x <- "Bismillah!"
+z <- paste(x, "No, we will not let you go.", y)
+rep(z, 3)
+1:10
+sample(1:20, 4)
+sample(1:20, 40, replace = TRUE)
+z <- c(1, 2, 3, 4, 5, 4, 3, 2, 1)
+z^2
+z == 2
+z > 2
+install.packages("dplyr")
+library(dplyr)
+```
+
+- Be able to read the help file of any function, (e.g., type `?plot` in the console)
+

@@ -1,8 +1,8 @@
 # Small script to check if packages are installed.
 
 pcks__ <- c("ISLR", "tidyverse", "haven", "readxl", "MASS", "glmnet", "splines", 
-          "class", "pROC", "rpart", "rpart.plot", "randomForest", "ca", 
-          "igraph", "ggdendro", "dendextend")
+            "class", "pROC", "rpart", "rpart.plot", "randomForest", "ca", 
+            "igraph", "ggdendro", "dendextend")
 
 ip__ <- rownames(installed.packages())
 
