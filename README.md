@@ -1,6 +1,8 @@
 # Data Analysis and Visualisation practicals
 Here you can find all information and files for the practicals of the elective master's course _Data Analysis and Visualisation_ at Utrecht University (course code `201600038` in Osiris).
 
+Download the practicals folder <a href="https://github.com/vankesteren/dav_practicals/archive/master.zip"><button>here</button></a>
+
 <table>
   <tr>
     <th> # </th>
