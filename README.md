@@ -44,6 +44,7 @@ Here you can find all information and files for the practicals of the elective m
     <td> Assignment EDA </td>
     <td> <a href="http://uudav.nl/04_Assignment_Exploratory_data_analysis/assignment_eda.html"> .html </a> </td>
     <td> <a href="http://uudav.nl/04_Assignment_Exploratory_data_analysis/assignment_eda.pdf"> .pdf </a> </td>
+    <td> <strong>Yes</strong> </td>
   </tr>
   <tr>
     <td> 05 </td>
@@ -90,6 +91,7 @@ Here you can find all information and files for the practicals of the elective m
     <td> Assignment Prediction Model </td>
     <td> <a href="http://uudav.nl/10_Assignment_Prediction_model/assignment_prediction.html"> .html </a> </td>
     <td> <a href="http://uudav.nl/10_Assignment_Prediction_model/assignment_prediction.pdf"> .pdf </a> </td>
+    <td> <strong>Yes</strong> </td>
   </tr>
   <tr>
     <td> 11 </td>
