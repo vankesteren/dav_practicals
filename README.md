@@ -55,19 +55,19 @@ Download the practicals folder <a href="https://github.com/vankesteren/dav_pract
   <tr>
     <td> 07 </td>
     <td> Supervised learning: Classification 1 </td>
-    <td> <a href="http://uudav.nl/08_Supervised_learning_Classification_1/classification_1.html"> link </a> </td>
+    <td> <a href="http://uudav.nl/07_Supervised_learning_Classification_1/classification_1.html"> link </a> </td>
     <td> Yes </td>
   </tr>
   <tr>
     <td> 08 </td>
     <td> Supervised learning: Classification 2 </td>
-    <td> <a href="http://uudav.nl/09_Supervised_learning_Classification_2/classification_2.html"> link </a> </td>
+    <td> <a href="http://uudav.nl/08_Supervised_learning_Classification_2/classification_2.html"> link </a> </td>
     <td> Yes </td>
   </tr>
   <tr>
     <td> 09 </td>
     <td> Supervised learning: Regression 3 </td>
-    <td> <a href="http://uudav.nl/07_Supervised_learning_Regression_3/regression_3.html"> link </a> </td>
+    <td> <a href="http://uudav.nl/09_Supervised_learning_Regression_3/regression_3.html"> link </a> </td>
     <td> Yes </td>
   </tr>
   <tr>
